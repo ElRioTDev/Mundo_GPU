@@ -1,0 +1,51 @@
+@{
+    var rolUsuario = Context.Session.GetString("Rol");
+}
+
+<div class="container mt-4">
+
+    <!-- Botón Menú Principal solo para ADMIN -->
+    @if (!string.IsNullOrEmpty(rolUsuario) && rolUsuario == "ADMIN")
+    {
+        <div class="mb-3">
+            <a asp-controller="User" asp-action="Main" class="btn btn-success">Ir al Menú Principal</a>
+        </div>
+    }
+
+    <!-- Formulario de búsqueda -->
+    <form class="row g-3 mb-4" method="POST" action="/Gpu/Find">
+        <div class="col-auto">
+            <label class="visually-hidden" for="gx">Buscar GPU</label>
+            <input type="text" class="form-control" id="gx" name="gx" placeholder="Buscar GPU..." required />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+        </div>
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-warning text-center">@ViewBag.Error</div>
+    }
+
+    <!-- Lista de GPUs -->
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@item.Imagen" class="card-img-top" alt="@item.Modelo" style="height:180px; object-fit:cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@item.Modelo</h5>
+                        <p class="card-text mb-1">Marca: @item.Marca</p>
+                        <p class="card-text mb-2">VRAM: @item.VRAM</p>
+                        <p class="card-text mb-2">Núcleos CUDA: @item.NucleosCuda</p>
+                        <p class="card-text mb-3">RayTracing: @(item.RayTracing ? "Sí" : "No")</p>
+                        <p class="card-text fw-bold mb-3">Precio: @item.Precio.ToString("C")</p>
+                        <a href="@Url.Action("Details", "Gpu", new { id = item.IdGPU })" class="btn btn-primary mt-auto">Detalles</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

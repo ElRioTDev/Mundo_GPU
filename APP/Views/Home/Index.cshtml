@@ -2,32 +2,34 @@
     ViewData["Title"] = "Bienvenido";
 }
 
-<div class="bienvenida-container">
-    <h1>Bienvenido</h1>
+<div class="container text-center mt-5">
+    <h1 class="mb-5">Bienvenido</h1>
 
-    <div class="botones">
-        <a asp-controller="Login" asp-action="Index"><button type="button">Iniciar Sesión</button></a>
-        <a asp-controller="Registro" asp-action="Index"><button type="button">Registrarse</button></a>
-      
-
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a asp-controller="Login" asp-action="Index" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+        <a asp-controller="Registro" asp-action="Index" class="btn btn-secondary btn-lg">Registrarse</a>
     </div>
 </div>
 
 <style>
-    .bienvenida-container {
-        text-align: center;
-        margin-top: 100px;
-    }
-
     h1 {
-        font-size: 36px;
-        margin-bottom: 40px;
+        font-weight: bold;
+        font-size: 3rem;
     }
 
-    .botones button {
-        padding: 15px 30px;
-        font-size: 16px;
-        margin: 0 10px;
-        cursor: pointer;
+    .btn-primary {
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        transition: background-color 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
     }
 </style>

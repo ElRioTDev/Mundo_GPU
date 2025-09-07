@@ -2,96 +2,68 @@
     ViewData["Title"] = "Registro de Usuario";
 }
 
-<div class="register-container">
-    <h2>Registrarse</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Registrarse</h3>
+                </div>
+                <div class="card-body">
+                    @* Mostrar errores generales de ModelState *@
+                   @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                        </div>
+                    }
 
-    @* Mostrar errores usando TempData *@
-    @if (TempData["Error"] != null)
-    {
-        <div class="error-message">@TempData["Error"]</div>
-    }
 
-    <form method="post" asp-controller="Registro" asp-action="ComprobarRegistro">
-        <div class="input-group">
-            <label for="usuario">Nombre de Usuario</label>
-            <input type="text" id="usuario" name="usuario" required />
+                    <form method="post" asp-controller="Registro" asp-action="ComprobarRegistro">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sexo" class="form-label">Sexo</label>
+                            <select class="form-select" id="sexo" name="sexo" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" maxlength="16" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" maxlength="32" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmarPassword" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" maxlength="32" required />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                            <a asp-controller="Login" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="input-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required />
-        </div>
-
-        <div class="input-group">
-            <label for="confirmarPassword">Confirmar Contraseña</label>
-            <input type="password" id="confirmarPassword" name="confirmarPassword" required />
-        </div>
-
-        <div class="botones">
-            <button type="submit">Registrarse</button>
-            <a asp-controller="Login" asp-action="Index" class="cancel-button">Cancelar</a>
-        </div>
-    </form>
+    </div>
 </div>
-
-<style>
-    .register-container {
-        max-width: 500px;
-        margin: 50px auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-align: center;
-        font-family: Arial, sans-serif;
-    }
-
-    .input-group {
-        margin-bottom: 15px;
-        text-align: left;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-    }
-
-    .botones {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .botones button,
-    .botones .cancel-button {
-        padding: 10px 20px;
-        font-size: 14px;
-        cursor: pointer;
-        margin-right: 10px;
-        text-decoration: none;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 3px;
-        display: inline-block;
-    }
-
-    .botones .cancel-button {
-        background-color: #6c757d;
-    }
-
-    .error-message {
-        color: red;
-        margin-bottom: 15px;
-        font-weight: bold;
-    }
-</style>

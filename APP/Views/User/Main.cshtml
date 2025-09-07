@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Menú Principal";
+}
+
+<h2>Menú Principal</h2>
+
+<p>Desde aquí puedes acceder a todas las acciones del CRUD de usuarios:</p>
+
+<div class="btn-group-vertical">
+    <a asp-controller="User" asp-action="Index" class="btn btn-primary mb-2">Lista de Usuarios</a>
+    <a asp-controller="User" asp-action="Create" class="btn btn-success mb-2">Crear Nuevo Usuario</a>
+    <a asp-controller="User" asp-action="Edit" asp-route-id="1" class="btn btn-warning mb-2">Editar Usuario Ejemplo</a>
+    <a asp-controller="User" asp-action="Details" asp-route-id="1" class="btn btn-info mb-2">Detalles de Usuario Ejemplo</a>
+</div>
+
+<p class="text-muted">
+    Nota: Para Editar o Detalles, reemplaza el ID con un usuario válido desde la base de datos.
+</p>

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using APP.Models;
+using APP.Filters; // <-- Importar el filtro
 
 namespace APP.Controllers;
 
@@ -13,6 +14,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [RedirectIfAuthenticated] // Redirige a GPU/Index si ya hay sesión iniciada
     public IActionResult Index()
     {
         return View();

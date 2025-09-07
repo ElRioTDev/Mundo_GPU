@@ -1,0 +1,73 @@
+@model APP.Models.Usuario
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Crear Usuario</h3>
+                </div>
+                <div class="card-body">
+                    @* Mostrar errores generales *@
+                    @if (ViewData.ModelState != null && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+                    {
+                        foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors).Where(e => e != null))
+                        {
+                            <div class="alert alert-danger">@error.ErrorMessage</div>
+                        }
+                    }
+
+                    <form method="post" asp-action="Create">
+                        <div class="mb-3">
+                            <label for="Nombre" class="form-label">Nombre</label>
+                            <input asp-for="Nombre" class="form-control" id="Nombre" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Apellido" class="form-label">Apellido</label>
+                            <input asp-for="Apellido" class="form-control" id="Apellido" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Sexo" class="form-label">Sexo</label>
+                            <select asp-for="Sexo" class="form-select" id="Sexo" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="M" selected="@Model?.Sexo == "M"">Masculino</option>
+                                <option value="F" selected="@Model?.Sexo == "F"">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Username" class="form-label">Nombre de Usuario</label>
+                            <input asp-for="Username" class="form-control" id="Username" maxlength="16" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Password" class="form-label">Contraseña</label>
+                            <input asp-for="Password" type="password" class="form-control" id="Password" maxlength="32" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Rol" class="form-label">Rol</label>
+                            <select asp-for="Rol" class="form-select" id="Rol" required>
+                                <option value="">-- Seleccione rol --</option>
+                                <option value="ADMIN" selected="@Model?.Rol == "ADMIN"">ADMIN</option>
+                                <option value="EMPLEADO" selected="@Model?.Rol == "EMPLEADO"">EMPLEADO</option>
+                                <option value="ENCARGADO" selected="@Model?.Rol == "ENCARGADO"">ENCARGADO</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

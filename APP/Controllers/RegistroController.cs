@@ -1,40 +1,50 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
+using APP.Filters;
 
 namespace APP.Controllers
 {
+    [RedirectIfAuthenticated] // Evita acceso si ya hay sesión
     public class RegistroController : Controller
     {
-        private readonly ConexionMySql db = new ConexionMySql();
+        private readonly ConexionMySql _db;
+
+        public RegistroController(ConexionMySql db)
+        {
+            _db = db;
+        }
 
         [HttpGet]
         public IActionResult Index()
         {
-
             return View();
         }
 
-        [HttpPost]
-        public IActionResult ComprobarRegistro(string usuario, string password, string confirmarPassword)
-        {
-            // 1. Validar que las contraseñas coincidan
-            if (password != confirmarPassword)
-            {
-                TempData["Error"] = "Las contraseñas no coinciden";
-                return RedirectToAction("Index"); // vuelve al formulario de registro
-            }
+       [HttpPost]
+public IActionResult ComprobarRegistro(
+    string usuario, string password, string confirmarPassword,
+    string nombre, string apellido, string sexo)
+{
+    if (password != confirmarPassword)
+    {
+        ModelState.AddModelError("", "Error: las contraseñas no coinciden.");
+        return View("Index");
+    }
 
-            // 2. Llamar al método para registrar el usuario
-            bool exito = db.RegistrarUsuario(usuario, password);
+    // Llamar al registro y capturar mensaje de error
+    string mensajeError;
+    bool exito = _db.RegistrarUsuario(usuario, password, nombre, apellido, sexo, out mensajeError);
+    if (!exito)
+    {
+        ModelState.AddModelError("", mensajeError); // <- Aquí se muestra el error exacto
+        return View("Index");
+    }
 
-            if (!exito)
-            {
-                TempData["Error"] = "Ocurrió un error al registrar el usuario";
-                return RedirectToAction("Index"); // vuelve al formulario de registro
-            }
+    TempData["Success"] = "Usuario registrado correctamente";
+    return RedirectToAction("Index", "Login");
+}
 
-            // 3. Redirigir al login después del registro
-            return RedirectToAction("Index", "Login");
-        }
+
+
     }
 }
