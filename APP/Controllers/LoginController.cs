@@ -14,7 +14,7 @@ namespace APP.Controllers
         }
 
         // GET: Login
-        public IActionResult index()
+        public IActionResult Index()
         {
             // Limpiar sesión por seguridad
             HttpContext.Session.Clear();
@@ -23,7 +23,7 @@ namespace APP.Controllers
 
         // POST: Login
         [HttpPost]
-        public IActionResult index(string username, string password)
+        public IActionResult Index(string username, string password)
         {
             // Verificar credenciales directamente
             var usuario = _db.ObtenerUsuario(username, password);
