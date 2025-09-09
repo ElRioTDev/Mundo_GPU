@@ -5,10 +5,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f5f7fa;
     color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
 }
 
 /* ============================
-   Navbar (Bootstrap override)
+   Navbar
 ============================ */
 .navbar {
     background: linear-gradient(90deg, #1b6ec2, #3a8ee6);
@@ -27,7 +31,7 @@ body {
     color: #ffd700 !important;
 }
 
-/* Navbar toggler icon */
+/* Navbar toggler */
 .navbar-toggler {
     border-color: #fff;
 }
@@ -37,15 +41,73 @@ body {
 }
 
 /* ============================
-   Main Container
+   Buttons
 ============================ */
-main.container {
-    padding: 2.5rem 1rem;
+.btn-primary {
+    background: linear-gradient(135deg, #1b6ec2, #3a8ee6);
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3a8ee6, #1b6ec2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.btn-danger {
+    background: #dc3545;
+    border: none;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ============================
+   Sidebar
+============================ */
+.sidebar {
+    background-color: #f8f9fa;
+    padding: 15px;
+    min-width: 200px;
+    max-width: 220px;
+    height: calc(100vh - 70px); /* Ajusta según altura navbar */
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.sidebar h5 {
+    margin-bottom: 15px;
+}
+
+.sidebar a {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* ============================
+   Content
+============================ */
+.content {
+    flex-grow: 1;
+    padding: 20px;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin: 1rem;
 }
 
 /* ============================
@@ -56,6 +118,7 @@ footer.footer {
     background: #1b1b1b;
     color: #eee;
     font-size: 0.9rem;
+    text-align: center;
 }
 
 footer.footer a {
@@ -68,23 +131,7 @@ footer.footer a:hover {
 }
 
 /* ============================
-   Buttons (Bootstrap override)
-============================ */
-.btn-primary {
-    background: linear-gradient(135deg, #1b6ec2, #3a8ee6);
-    border: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #3a8ee6, #1b6ec2);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-
-/* ============================
-   Tables (Bootstrap override)
+   Tables
 ============================ */
 .table {
     border-radius: 8px;
@@ -124,4 +171,28 @@ input:focus, textarea:focus, select:focus {
 h1, h2, h3 {
     font-weight: 600;
     color: #1b1b1b;
+}
+
+/* ============================
+   Flex layout for main + sidebar
+============================ */
+.layout-container {
+    display: flex;
+    flex-grow: 1;
+}
+
+/* Responsive: collapse sidebar en móvil */
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-width: none;
+        box-shadow: none;
+    }
+    .content {
+        margin: 0.5rem;
+    }
 }

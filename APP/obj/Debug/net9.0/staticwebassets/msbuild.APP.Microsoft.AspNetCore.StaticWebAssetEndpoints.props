@@ -1,16 +1,16 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAssetEndpoint Include="_content/APP/APP.7pbzv90kl9.bundle.scp.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\APP.7pbzv90kl9.bundle.scp.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"7pbzv90kl9"},{"Name":"integrity","Value":"sha256-\u002B2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR\u002BqgotzAQ="},{"Name":"label","Value":"_content/APP/APP.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1121"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022\u002B2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR\u002BqgotzAQ=\u0022"},{"Name":"Last-Modified","Value":"Sun, 07 Sep 2025 02:38:47 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/APP/APP.bundle.scp.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\APP.7pbzv90kl9.bundle.scp.css'))</AssetFile>
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\APP.x4tq82wddu.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-\u002B2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR\u002BqgotzAQ="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1121"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022\u002B2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR\u002BqgotzAQ=\u0022"},{"Name":"Last-Modified","Value":"Sun, 07 Sep 2025 02:38:47 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-AaZVVgn7hE9eKhwMH\u002BozLp7oOrjqG4H4d49MjoXIir4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4790"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022AaZVVgn7hE9eKhwMH\u002BozLp7oOrjqG4H4d49MjoXIir4=\u0022"},{"Name":"Last-Modified","Value":"Tue, 09 Sep 2025 01:11:53 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/APP/APP.x4tq82wddu.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\APP.x4tq82wddu.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"x4tq82wddu"},{"Name":"integrity","Value":"sha256-AaZVVgn7hE9eKhwMH\u002BozLp7oOrjqG4H4d49MjoXIir4="},{"Name":"label","Value":"_content/APP/APP.bundle.scp.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4790"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022AaZVVgn7hE9eKhwMH\u002BozLp7oOrjqG4H4d49MjoXIir4=\u0022"},{"Name":"Last-Modified","Value":"Tue, 09 Sep 2025 01:11:53 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/APP/css/site.b9sayid5wm.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>

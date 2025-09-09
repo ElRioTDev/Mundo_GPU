@@ -57,25 +57,27 @@
 
             <!-- Proveedor existente -->
             <div class="col-md-6">
-                <label class="form-label">Proveedor existente</label>
+                <label class="form-label">Proveedor existente (opcional)</label>
                 <select asp-for="ProveedoresIdProveedor" class="form-select">
-                    <option value="0">-- Seleccionar proveedor --</option>
+                    <option value="0">-- Seleccionar proveedor existente --</option>
                     @foreach (var p in proveedores)
                     {
                         <option value="@p.IdProveedor">@p.Nombre</option>
                     }
                 </select>
+                <small class="text-muted">Opcional: selecciona un proveedor existente O crea uno nuevo abajo</small>
             </div>
 
             <!-- Nuevo proveedor -->
             <div class="col-md-6">
-                <label class="form-label">Añadir nuevo proveedor (opcional)</label>
-                <input type="text" name="NuevoProveedor.Nombre" placeholder="Nombre" class="form-control mb-1" />
-                <input type="text" name="NuevoProveedor.Direccion" placeholder="Dirección" class="form-control mb-1" />
-                <input type="text" name="NuevoProveedor.Telefono" placeholder="Teléfono" class="form-control mb-1" />
-                <input type="email" name="NuevoProveedor.Email" placeholder="Email" class="form-control" />
-                <small class="text-muted">Si completas estos campos, se creará un proveedor nuevo.</small>
+                <label class="form-label">Crear nuevo proveedor (opcional)</label>
+                <input type="text" name="nuevoProveedorNombre" placeholder="Nombre *" class="form-control mb-1" />
+                <input type="text" name="nuevoProveedorDireccion" placeholder="Dirección" class="form-control mb-1" />
+                <input type="text" name="nuevoProveedorTelefono" placeholder="Teléfono" class="form-control mb-1" />
+                <input type="email" name="nuevoProveedorEmail" placeholder="Email" class="form-control" />
+                <small class="text-muted">Si completas el nombre, se creará un proveedor nuevo</small>
             </div>
+
 
             <!-- Botón submit -->
             <div class="col-12 mt-3">

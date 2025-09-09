@@ -25,7 +25,8 @@ namespace APP.Data
             {
                 using var conn = GetConnection();
                 conn.Open();
-                string query = "SELECT idUSER, username, rol FROM user WHERE username=@usuario AND password=@password LIMIT 1";
+                // ✅ Ya no necesitamos el idUSER
+                string query = "SELECT username, rol FROM user WHERE username=@usuario AND password=@password LIMIT 1";
                 using var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@usuario", usuario);
                 cmd.Parameters.AddWithValue("@password", contraseña);
@@ -35,10 +36,16 @@ namespace APP.Data
                 {
                     user = new Usuario
                     {
-                        Id = reader.GetInt32("idUSER"),
+                        // ❌ Ya no usamos Id
                         Username = reader.GetString("username"),
                         Rol = reader.GetString("rol")
                     };
+
+                    Console.WriteLine($"✅ Usuario encontrado: {user.Username}, Rol: {user.Rol}");
+                }
+                else
+                {
+                    Console.WriteLine("❌ No se encontró usuario");
                 }
             }
             catch (Exception ex)
@@ -48,6 +55,7 @@ namespace APP.Data
 
             return user;
         }
+
 
         // ======================= OBTENER USUARIO POR USERNAME =======================
         public Usuario ObtenerUsuarioPorUsername(string username)
@@ -237,49 +245,79 @@ namespace APP.Data
         }
 
 
-        // ======================= EDITAR GPU =======================
-        public bool EditarGPU(Gpu gpu)
+        public bool EditarGPU(Gpu gpu, Proveedor nuevoProveedor = null)
         {
+            const string insertProveedorSql = @"
+        INSERT INTO Proveedor (Nombre, Direccion, Telefono, Email)
+        VALUES (@Nombre, @Direccion, @Telefono, @Email);
+        SELECT LAST_INSERT_ID();
+    ";
+
+            const string updateGpuSql = @"
+        UPDATE GPU SET
+            Marca                   = @Marca,
+            Modelo                  = @Modelo,
+            VRAM                    = @VRAM,
+            NucleosCuda             = @NucleosCuda,
+            RayTracing              = @RayTracing,
+            Imagen                  = @Imagen,
+            Precio                  = @Precio,
+            Proveedores_idProveedor = @ProveedorId
+        WHERE idGPU = @IdGPU;
+    ";
+
             try
             {
-                using (var conn = this.GetConnection())
+                using var conn = GetConnection();
+                conn.Open();
+                using var tx = conn.BeginTransaction();
+
+                // 1) Si trajimos un proveedor nuevo, lo insertamos primero
+                if (nuevoProveedor != null)
                 {
-                    conn.Open();
-                    string query = @"UPDATE GPU SET 
-                                Marca = @Marca, 
-                                Modelo = @Modelo, 
-                                VRAM = @VRAM, 
-                                NucleosCuda = @NucleosCuda, 
-                                RayTracing = @RayTracing, 
-                                Imagen = @Imagen, 
-                                Precio = @Precio, 
-                                Proveedores_idProveedor = @ProveedorId
-                             WHERE idGPU = @IdGPU";
+                    using var cmdProv = new MySqlCommand(insertProveedorSql, conn, tx);
+                    cmdProv.Parameters.Add("@Nombre", MySqlDbType.VarChar, 100).Value = nuevoProveedor.Nombre;
+                    cmdProv.Parameters.Add("@Direccion", MySqlDbType.VarChar, 200).Value = nuevoProveedor.Direccion;
+                    cmdProv.Parameters.Add("@Telefono", MySqlDbType.VarChar, 50).Value = nuevoProveedor.Telefono;
+                    cmdProv.Parameters.Add("@Email", MySqlDbType.VarChar, 100).Value = nuevoProveedor.Email;
 
-                    using (var cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Marca", gpu.Marca);
-                        cmd.Parameters.AddWithValue("@Modelo", gpu.Modelo);
-                        cmd.Parameters.AddWithValue("@VRAM", gpu.VRAM);
-                        cmd.Parameters.AddWithValue("@NucleosCuda", gpu.NucleosCuda);
-                        cmd.Parameters.AddWithValue("@RayTracing", gpu.RayTracing);
-                        cmd.Parameters.AddWithValue("@Imagen", gpu.Imagen);
-                        cmd.Parameters.AddWithValue("@Precio", gpu.Precio);
-                        cmd.Parameters.AddWithValue("@ProveedorId", gpu.ProveedoresIdProveedor);
-                        cmd.Parameters.AddWithValue("@IdGPU", gpu.IdGPU);
-
-                        cmd.ExecuteNonQuery();
-                    }
+                    // Ejecutar e capturar el nuevo Id
+                    var newId = Convert.ToInt32(cmdProv.ExecuteScalar());
+                    gpu.ProveedoresIdProveedor = newId;
                 }
 
+                // 2) Actualizar la GPU
+                using var cmdGpu = new MySqlCommand(updateGpuSql, conn, tx);
+                cmdGpu.Parameters.Add("@Marca", MySqlDbType.VarChar, 100).Value = gpu.Marca;
+                cmdGpu.Parameters.Add("@Modelo", MySqlDbType.VarChar, 100).Value = gpu.Modelo;
+                cmdGpu.Parameters.Add("@VRAM", MySqlDbType.VarChar, 50).Value = gpu.VRAM;
+                cmdGpu.Parameters.Add("@NucleosCuda", MySqlDbType.Int32).Value = gpu.NucleosCuda;
+                cmdGpu.Parameters.Add("@RayTracing", MySqlDbType.Bit).Value = gpu.RayTracing;
+                cmdGpu.Parameters.Add("@Imagen", MySqlDbType.VarChar, 255).Value =
+                    string.IsNullOrEmpty(gpu.Imagen) ? (object)DBNull.Value : gpu.Imagen;
+                cmdGpu.Parameters.Add("@Precio", MySqlDbType.Decimal).Value = gpu.Precio;
+                cmdGpu.Parameters.Add("@ProveedorId", MySqlDbType.Int32).Value = gpu.ProveedoresIdProveedor;
+                cmdGpu.Parameters.Add("@IdGPU", MySqlDbType.Int32).Value = gpu.IdGPU;
+
+                int filas = cmdGpu.ExecuteNonQuery();
+                if (filas == 0)
+                {
+                    tx.Rollback();
+                    return false;
+                }
+
+                tx.Commit();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al actualizar GPU: " + ex.Message);
+                Console.WriteLine($"Error al editar GPU con proveedor: {ex.Message}");
                 return false;
             }
         }
+
+
+
 
 
 
@@ -312,59 +350,74 @@ namespace APP.Data
         }
 
         // ======================= INSERTAR GPU CON PROVEEDOR =======================
-        public bool InsertarGPU(Gpu gpu, Proveedor nuevoProveedor = null)
+public bool InsertarGPU(Gpu gpu, Proveedor nuevoProveedor = null)
+{
+    using (var conn = this.GetConnection())
+    {
+        conn.Open();
+        using (var transaction = conn.BeginTransaction()) // ✅ TRANSACCIÓN
         {
             try
             {
-                using (var conn = this.GetConnection())
+                int proveedorId = gpu.ProveedoresIdProveedor;
+
+                // Insertar nuevo proveedor si se completa al menos el nombre
+                if (nuevoProveedor != null && !string.IsNullOrWhiteSpace(nuevoProveedor.Nombre))
                 {
-                    conn.Open();
-                    int proveedorId = gpu.ProveedoresIdProveedor;
+                    string queryProveedor = @"INSERT INTO Proveedores (Nombre, Direccion, Telefono, Email) 
+                                      VALUES (@Nombre, @Direccion, @Telefono, @Email);
+                                      SELECT LAST_INSERT_ID();";
 
-                    // Insertar nuevo proveedor si se completa al menos el nombre
-                    if (nuevoProveedor != null && !string.IsNullOrWhiteSpace(nuevoProveedor.Nombre))
+                    using (var cmd = new MySqlCommand(queryProveedor, conn, transaction))
                     {
-                        string queryProveedor = @"INSERT INTO Proveedores (Nombre, Direccion, Telefono, Email) 
-                                          VALUES (@Nombre, @Direccion, @Telefono, @Email);
-                                          SELECT LAST_INSERT_ID();";
-
-                        using (var cmd = new MySqlCommand(queryProveedor, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Nombre", nuevoProveedor.Nombre);
-                            cmd.Parameters.AddWithValue("@Direccion", nuevoProveedor.Direccion ?? "");
-                            cmd.Parameters.AddWithValue("@Telefono", nuevoProveedor.Telefono ?? "");
-                            cmd.Parameters.AddWithValue("@Email", nuevoProveedor.Email ?? "");
-                            proveedorId = Convert.ToInt32(cmd.ExecuteScalar());
-                        }
-                    }
-
-                    // Insertar GPU
-                    string queryGPU = @"INSERT INTO GPU (Marca, Modelo, VRAM, NucleosCuda, RayTracing, Imagen, Precio, Proveedores_idProveedor)
-                                VALUES (@Marca, @Modelo, @VRAM, @NucleosCuda, @RayTracing, @Imagen, @Precio, @ProveedorId)";
-
-                    using (var cmd = new MySqlCommand(queryGPU, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Marca", gpu.Marca);
-                        cmd.Parameters.AddWithValue("@Modelo", gpu.Modelo);
-                        cmd.Parameters.AddWithValue("@VRAM", gpu.VRAM);
-                        cmd.Parameters.AddWithValue("@NucleosCuda", gpu.NucleosCuda);
-                        cmd.Parameters.AddWithValue("@RayTracing", gpu.RayTracing);
-                        cmd.Parameters.AddWithValue("@Imagen", gpu.Imagen);
-                        cmd.Parameters.AddWithValue("@Precio", gpu.Precio);
-                        cmd.Parameters.AddWithValue("@ProveedorId", proveedorId);
-
-                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.AddWithValue("@Nombre", nuevoProveedor.Nombre);
+                        cmd.Parameters.AddWithValue("@Direccion", nuevoProveedor.Direccion ?? "");
+                        cmd.Parameters.AddWithValue("@Telefono", nuevoProveedor.Telefono ?? "");
+                        cmd.Parameters.AddWithValue("@Email", nuevoProveedor.Email ?? "");
+                        proveedorId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
 
+                // ✅ VALIDAR QUE TENEMOS UN PROVEEDOR VÁLIDO
+                if (proveedorId <= 0)
+                {
+                    throw new Exception("ID de proveedor no válido");
+                }
+
+                // Insertar GPU
+                string queryGPU = @"INSERT INTO GPU (Marca, Modelo, VRAM, NucleosCuda, RayTracing, Imagen, Precio, Proveedores_idProveedor)
+                            VALUES (@Marca, @Modelo, @VRAM, @NucleosCuda, @RayTracing, @Imagen, @Precio, @ProveedorId)";
+
+                using (var cmd = new MySqlCommand(queryGPU, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@Marca", gpu.Marca);
+                    cmd.Parameters.AddWithValue("@Modelo", gpu.Modelo);
+                    cmd.Parameters.AddWithValue("@VRAM", gpu.VRAM);
+                    cmd.Parameters.AddWithValue("@NucleosCuda", gpu.NucleosCuda);
+                    cmd.Parameters.AddWithValue("@RayTracing", gpu.RayTracing);
+                    cmd.Parameters.AddWithValue("@Imagen", gpu.Imagen);
+                    cmd.Parameters.AddWithValue("@Precio", gpu.Precio);
+                    cmd.Parameters.AddWithValue("@ProveedorId", proveedorId);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("No se insertó la GPU");
+                    }
+                }
+
+                transaction.Commit(); // ✅ CONFIRMAR TRANSACCIÓN
                 return true;
             }
             catch (Exception ex)
             {
+                transaction.Rollback(); // ✅ REVERTIR EN CASO DE ERROR
                 Console.WriteLine("Error al insertar GPU: " + ex.Message);
                 return false;
             }
         }
+    }
+}
 
 
 

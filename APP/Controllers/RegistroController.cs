@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
-using APP.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
-    [RedirectIfAuthenticated] // Evita acceso si ya hay sesión
     public class RegistroController : Controller
     {
         private readonly ConexionMySql _db;
@@ -17,15 +16,21 @@ namespace APP.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!string.IsNullOrEmpty(rol))
+            {
+                return RedirectToAction("Index", "Gpu");
+            }
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ComprobarRegistro(
-    string usuario, string password, string confirmarPassword,
-    string nombre, string apellido, string sexo,
-    string nivelAcademico, string institucion)
+            string usuario, string password, string confirmarPassword,
+            string nombre, string apellido, string sexo,
+            string nivelAcademico, string institucion)
         {
             if (password != confirmarPassword)
             {
@@ -33,7 +38,6 @@ namespace APP.Controllers
                 return View("Index");
             }
 
-            // Rol por defecto asignado aquí en el controller
             string rolPorDefecto = "EMPLEADO";
 
             string mensajeError;
@@ -58,11 +62,5 @@ namespace APP.Controllers
             TempData["Success"] = "Usuario registrado correctamente";
             return RedirectToAction("Index", "Login");
         }
-
-
-
-
-
-
     }
 }

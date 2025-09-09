@@ -4,12 +4,10 @@ using APP.Models;
 using APP.Filters;
 using System;
 using System.Collections.Generic;
-using APP.Helpers;
 
 namespace APP.Controllers
 {
-    // Solo usuarios logeados con rol ADMIN
-    [SessionRoleAuthorize(Roles.Admin)]
+    [AuthorizeSession("ADMIN")]
     public class UserController : Controller
     {
         private readonly ConexionMySql _db;
@@ -19,7 +17,6 @@ namespace APP.Controllers
             _db = db;
         }
 
-        // =================== Listar todos los usuarios ===================
         public IActionResult Index()
         {
             List<Usuario> lista = new List<Usuario>();
@@ -36,7 +33,6 @@ namespace APP.Controllers
             return View(lista);
         }
 
-        // =================== Crear nuevo usuario ===================
         public IActionResult Create()
         {
             return View();
@@ -53,18 +49,16 @@ namespace APP.Controllers
             {
                 string mensajeError;
                 bool exito = _db.RegistrarUsuario(
-                usuario.Username,
-                usuario.Password,
-                usuario.Nombre,
-                usuario.Apellido,
-                usuario.Sexo,
-                usuario.NivelAcademico, // string del combobox
-                usuario.Institucion,    // string de la institución
-                usuario.Rol,            // rol
-                out mensajeError
-            );
-            
-
+                    usuario.Username,
+                    usuario.Password,
+                    usuario.Nombre,
+                    usuario.Apellido,
+                    usuario.Sexo,
+                    usuario.NivelAcademico,
+                    usuario.Institucion,
+                    usuario.Rol,
+                    out mensajeError
+                );
 
                 if (!exito)
                 {
@@ -82,7 +76,6 @@ namespace APP.Controllers
             }
         }
 
-        // =================== Editar usuario ===================
         public IActionResult Edit(int id)
         {
             var usuario = _db.ObtenerUsuarioPorId(id);
@@ -123,7 +116,6 @@ namespace APP.Controllers
             }
         }
 
-        // =================== Eliminar usuario ===================
         public IActionResult Delete(int id)
         {
             try
@@ -142,7 +134,6 @@ namespace APP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // =================== Detalles de usuario ===================
         public IActionResult Details(int id)
         {
             var usuario = _db.ObtenerUsuarioPorId(id);
@@ -155,13 +146,11 @@ namespace APP.Controllers
             return View(usuario);
         }
 
-        // =================== Página principal de usuarios ===================
         public IActionResult Main()
         {
             return View();
         }
 
-        // =================== Buscar usuarios ===================
         [HttpGet]
         public IActionResult Search(string searchTerm)
         {

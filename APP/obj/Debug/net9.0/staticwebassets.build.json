@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "t3LS5pnlF3tOid0Wu1t31/gjWJukASaxG+cx3t545K0=",
+  "Hash": "h57a58iLc9is662tkqUCqYscAKj9Ymg/RSmPgCz/LBo=",
   "Source": "APP",
   "BasePath": "_content/APP",
   "Mode": "Default",
@@ -248,12 +248,12 @@
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Identity": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-7pbzv90kl9.gz",
+      "Identity": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-x4tq82wddu.gz",
       "SourceId": "APP",
       "SourceType": "Computed",
       "ContentRoot": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/APP",
-      "RelativePath": "APP#[.{fingerprint=7pbzv90kl9}]!.bundle.scp.css.gz",
+      "RelativePath": "APP#[.{fingerprint=x4tq82wddu}]!.bundle.scp.css.gz",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Alternative",
@@ -262,8 +262,8 @@
       "RelatedAsset": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "3ljaf85ndj",
-      "Integrity": "pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=",
+      "Fingerprint": "4xm6n0jwb6",
+      "Integrity": "eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css"
@@ -815,12 +815,12 @@
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-7pbzv90kl9.gz",
+      "Identity": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-x4tq82wddu.gz",
       "SourceId": "APP",
       "SourceType": "Computed",
       "ContentRoot": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/APP",
-      "RelativePath": "APP#[.{fingerprint=7pbzv90kl9}]?.styles.css.gz",
+      "RelativePath": "APP#[.{fingerprint=x4tq82wddu}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -829,8 +829,8 @@
       "RelatedAsset": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "3ljaf85ndj",
-      "Integrity": "pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=",
+      "Fingerprint": "4xm6n0jwb6",
+      "Integrity": "eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css"
@@ -1375,8 +1375,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "7pbzv90kl9",
-      "Integrity": "+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=",
+      "Fingerprint": "x4tq82wddu",
+      "Integrity": "AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css"
@@ -1396,8 +1396,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "7pbzv90kl9",
-      "Integrity": "+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=",
+      "Fingerprint": "x4tq82wddu",
+      "Integrity": "AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css"
@@ -2728,13 +2728,13 @@
   ],
   "Endpoints": [
     {
-      "Route": "APP.7pbzv90kl9.bundle.scp.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-7pbzv90kl9.gz",
+      "Route": "APP.bundle.scp.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-x4tq82wddu.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001862197393"
+          "Quality": "0.000711743772"
         }
       ],
       "ResponseHeaders": [
@@ -2744,19 +2744,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "536"
+          "Value": "1404"
         },
         {
           "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Encoding",
@@ -2772,26 +2772,18 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
+          "Value": "W/\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
-        },
-        {
-          "Name": "label",
-          "Value": "APP.bundle.scp.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
         }
       ]
     },
     {
-      "Route": "APP.7pbzv90kl9.bundle.scp.css",
+      "Route": "APP.bundle.scp.css",
       "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2801,7 +2793,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1121"
+          "Value": "4790"
         },
         {
           "Name": "Content-Type",
@@ -2809,11 +2801,293 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
+          "Value": "\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
+        }
+      ]
+    },
+    {
+      "Route": "APP.bundle.scp.css.gz",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-x4tq82wddu.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1404"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw="
+        }
+      ]
+    },
+    {
+      "Route": "APP.styles.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-x4tq82wddu.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000711743772"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1404"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
+        }
+      ]
+    },
+    {
+      "Route": "APP.styles.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4790"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
+        }
+      ]
+    },
+    {
+      "Route": "APP.styles.css.gz",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-x4tq82wddu.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1404"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw="
+        }
+      ]
+    },
+    {
+      "Route": "APP.x4tq82wddu.bundle.scp.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-x4tq82wddu.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000711743772"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1404"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "x4tq82wddu"
+        },
+        {
+          "Name": "label",
+          "Value": "APP.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
+        }
+      ]
+    },
+    {
+      "Route": "APP.x4tq82wddu.bundle.scp.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4790"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2823,7 +3097,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
+          "Value": "x4tq82wddu"
         },
         {
           "Name": "label",
@@ -2831,13 +3105,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
         }
       ]
     },
     {
-      "Route": "APP.7pbzv90kl9.bundle.scp.css.gz",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-7pbzv90kl9.gz",
+      "Route": "APP.x4tq82wddu.bundle.scp.css.gz",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-x4tq82wddu.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2846,7 +3120,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "536"
+          "Value": "1404"
         },
         {
           "Name": "Content-Type",
@@ -2854,11 +3128,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2876,7 +3150,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
+          "Value": "x4tq82wddu"
         },
         {
           "Name": "label",
@@ -2884,18 +3158,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg="
+          "Value": "sha256-eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw="
         }
       ]
     },
     {
-      "Route": "APP.7pbzv90kl9.styles.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-7pbzv90kl9.gz",
+      "Route": "APP.x4tq82wddu.styles.css",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-x4tq82wddu.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001862197393"
+          "Quality": "0.000711743772"
         }
       ],
       "ResponseHeaders": [
@@ -2905,15 +3179,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "536"
+          "Value": "1404"
         },
         {
           "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2933,13 +3207,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
+          "Value": "W/\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
+          "Value": "x4tq82wddu"
         },
         {
           "Name": "label",
@@ -2947,12 +3221,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
         }
       ]
     },
     {
-      "Route": "APP.7pbzv90kl9.styles.css",
+      "Route": "APP.x4tq82wddu.styles.css",
       "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2962,7 +3236,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1121"
+          "Value": "4790"
         },
         {
           "Name": "Content-Type",
@@ -2970,11 +3244,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
+          "Value": "\"AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2984,7 +3258,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
+          "Value": "x4tq82wddu"
         },
         {
           "Name": "label",
@@ -2992,13 +3266,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
+          "Value": "sha256-AaZVVgn7hE9eKhwMH+ozLp7oOrjqG4H4d49MjoXIir4="
         }
       ]
     },
     {
-      "Route": "APP.7pbzv90kl9.styles.css.gz",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-7pbzv90kl9.gz",
+      "Route": "APP.x4tq82wddu.styles.css.gz",
+      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-x4tq82wddu.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3007,7 +3281,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "536"
+          "Value": "1404"
         },
         {
           "Name": "Content-Type",
@@ -3015,11 +3289,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
+          "Value": "\"eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
+          "Value": "Tue, 09 Sep 2025 01:11:53 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3037,7 +3311,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "7pbzv90kl9"
+          "Value": "x4tq82wddu"
         },
         {
           "Name": "label",
@@ -3045,281 +3319,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg="
-        }
-      ]
-    },
-    {
-      "Route": "APP.bundle.scp.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-7pbzv90kl9.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.001862197393"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "536"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
-        }
-      ]
-    },
-    {
-      "Route": "APP.bundle.scp.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\APP.bundle.scp.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1121"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
-        }
-      ]
-    },
-    {
-      "Route": "APP.bundle.scp.css.gz",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\7sq7hrb9cj-7pbzv90kl9.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "536"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg="
-        }
-      ]
-    },
-    {
-      "Route": "APP.styles.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-7pbzv90kl9.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.001862197393"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "536"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
-        }
-      ]
-    },
-    {
-      "Route": "APP.styles.css",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\scopedcss\\bundle\\APP.styles.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1121"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-+2gptS7ikaN6F5rw26jJFGNIR0OmayhTOtR+qgotzAQ="
-        }
-      ]
-    },
-    {
-      "Route": "APP.styles.css.gz",
-      "AssetFile": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\Debug\\net9.0\\compressed\\kve4y1hrg9-7pbzv90kl9.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "536"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 07 Sep 2025 02:38:47 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-pyBpclh1duhxtRAMg3xOx/orSBEKi0cAVHSik05zcPg="
+          "Value": "sha256-eJ/E0e24yTf0X8/NyoNzDEfCdWl9KBI7OFAGHwa9Nfw="
         }
       ]
     },

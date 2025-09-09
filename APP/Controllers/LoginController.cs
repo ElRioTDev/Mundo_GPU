@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
 using Microsoft.AspNetCore.Http;
-using APP.Filters;
 
 namespace APP.Controllers
 {
-    [RedirectIfAuthenticated] // Evita acceso si ya hay sesión
     public class LoginController : Controller
     {
         private readonly ConexionMySql _db;
@@ -18,6 +16,12 @@ namespace APP.Controllers
         // GET: Login
         public IActionResult Index()
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!string.IsNullOrEmpty(rol))
+            {
+                return RedirectToAction("Index", "Gpu");
+            }
+
             return View();
         }
 
@@ -34,8 +38,6 @@ namespace APP.Controllers
                 return View();
             }
 
-            // Guardar en sesión
-            HttpContext.Session.SetInt32("UserId", usuario.Id);
             HttpContext.Session.SetString("Username", usuario.Username);
             HttpContext.Session.SetString("Rol", usuario.Rol);
 
@@ -47,10 +49,8 @@ namespace APP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
-            Console.WriteLine(">>> CERRANDO SESIÓN...");
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
-
     }
 }

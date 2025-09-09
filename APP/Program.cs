@@ -9,6 +9,9 @@ builder.Services.AddControllersWithViews();
 // Registrar ConexionMySql como servicio Scoped
 builder.Services.AddScoped<ConexionMySql>();
 
+// Registrar IHttpContextAccessor para poder usarlo en los layouts/filtros
+builder.Services.AddHttpContextAccessor();
+
 // Configurar sesiones en memoria
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

@@ -98,8 +98,6 @@ C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\pwa5dum13t-2z0ns9nrw6.
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\y3xp8ih84h-muycvpuwrr.gz
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\77p8i71iw3-87fc7y1x7t.gz
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\97ox7ow9t2-mlv21k5csn.gz
-C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\kve4y1hrg9-7pbzv90kl9.gz
-C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\7sq7hrb9cj-7pbzv90kl9.gz
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\staticwebassets.build.json
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\staticwebassets.development.json
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\staticwebassets.build.endpoints.json
@@ -115,3 +113,5 @@ C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\refint\APP.dll
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\APP.pdb
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\APP.genruntimeconfig.cache
 C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\ref\APP.dll
+C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\kve4y1hrg9-x4tq82wddu.gz
+C:\xampp\htdocs\Mundo GPU\app\obj\Debug\net9.0\compressed\7sq7hrb9cj-x4tq82wddu.gz
