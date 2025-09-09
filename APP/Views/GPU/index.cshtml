@@ -7,8 +7,11 @@
     <!-- Botón Menú Principal solo para ADMIN -->
     @if (!string.IsNullOrEmpty(rolUsuario) && rolUsuario == "ADMIN")
     {
-        <div class="mb-3">
+        <div class="mb-3 d-flex gap-2">
             <a asp-controller="User" asp-action="Main" class="btn btn-success">Ir al Menú Principal</a>
+
+            <!-- Botón Crear GPU solo para ADMIN -->
+            <a asp-controller="Gpu" asp-action="Create" class="btn btn-primary">Añadir GPU</a>
         </div>
     }
 
@@ -42,7 +45,21 @@
                         <p class="card-text mb-2">Núcleos CUDA: @item.NucleosCuda</p>
                         <p class="card-text mb-3">RayTracing: @(item.RayTracing ? "Sí" : "No")</p>
                         <p class="card-text fw-bold mb-3">Precio: @item.Precio.ToString("C")</p>
-                        <a href="@Url.Action("Details", "Gpu", new { id = item.IdGPU })" class="btn btn-primary mt-auto">Detalles</a>
+
+                        <!-- Botones según rol -->
+                        <div class="mt-auto d-flex gap-2">
+                            <a href="@Url.Action("Details", "Gpu", new { id = item.IdGPU })" class="btn btn-primary flex-grow-1">Detalles</a>
+
+                            @if (rolUsuario == "ADMIN" || rolUsuario == "ENCARGADO")
+                            {
+                                <a href="@Url.Action("Edit", "Gpu", new { id = item.IdGPU })" class="btn btn-warning flex-grow-1">Editar</a>
+                            }
+
+                            @if (rolUsuario == "ADMIN")
+                            {
+                                <a href="@Url.Action("Delete", "Gpu", new { id = item.IdGPU })" class="btn btn-danger flex-grow-1">Borrar</a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

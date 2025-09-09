@@ -23,6 +23,7 @@ namespace APP.Controllers
 
         // POST: Login
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(string username, string password)
         {
             var usuario = _db.ObtenerUsuario(username, password);
@@ -41,11 +42,15 @@ namespace APP.Controllers
             return RedirectToAction("Index", "Gpu");
         }
 
-        // Cerrar sesión
+        // POST: Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
+            Console.WriteLine(">>> CERRANDO SESIÓN...");
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
+
     }
 }

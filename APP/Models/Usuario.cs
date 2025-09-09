@@ -35,10 +35,17 @@ namespace APP.Models
         [RegularExpression("^(M|F)$", ErrorMessage = "Sexo inválido")]
         public string Sexo { get; set; }
 
-        // ================= Relación con Nivel Académico =================
+        // ================= Datos de Nivel Académico =================
+        [Required(ErrorMessage = "El ID del nivel académico es obligatorio")]
+        [Display(Name = "Nivel Académico ID")]
+        public int NivelAcademicoId { get; set; } // ID para relacionar con la tabla Nivel_Academico
+
         [Required(ErrorMessage = "El nivel académico es obligatorio")]
         [Display(Name = "Nivel Académico")]
-        public int NivelAcademicoId { get; set; }
+        public string NivelAcademico { get; set; } // Nombre del nivel para combobox estático
+
+        [Display(Name = "Institución")]
+        public string Institucion { get; set; } // Permite que el usuario agregue su institución
 
         // Campo auxiliar (para mostrar el nombre del nivel en vistas)
         public string? NivelAcademicoNombre { get; set; }

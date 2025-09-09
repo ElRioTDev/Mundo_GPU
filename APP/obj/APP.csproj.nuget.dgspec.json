@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\xampp\\htdocs\\Mundo GPU\\APP\\APP.csproj": {}
+    "C:\\xampp\\htdocs\\Mundo GPU\\app\\APP.csproj": {}
   },
   "projects": {
-    "C:\\xampp\\htdocs\\Mundo GPU\\APP\\APP.csproj": {
+    "C:\\xampp\\htdocs\\Mundo GPU\\app\\APP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\xampp\\htdocs\\Mundo GPU\\APP\\APP.csproj",
+        "projectUniqueName": "C:\\xampp\\htdocs\\Mundo GPU\\app\\APP.csproj",
         "projectName": "APP",
-        "projectPath": "C:\\xampp\\htdocs\\Mundo GPU\\APP\\APP.csproj",
+        "projectPath": "C:\\xampp\\htdocs\\Mundo GPU\\app\\APP.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\xampp\\htdocs\\Mundo GPU\\APP\\obj\\",
+        "outputPath": "C:\\xampp\\htdocs\\Mundo GPU\\app\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",

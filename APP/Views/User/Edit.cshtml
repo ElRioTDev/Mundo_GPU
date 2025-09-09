@@ -69,6 +69,24 @@
                             <span asp-validation-for="Rol" class="text-danger"></span>
                         </div>
 
+                        <div class="mb-3">
+                            <label asp-for="NivelAcademico" class="form-label"></label>
+                            <select asp-for="NivelAcademico" class="form-select">
+                                <option value="">Seleccione nivel...</option>
+                                <option value="Primaria" selected="@Model.NivelAcademico == "Primaria"">Primaria</option>
+                                <option value="Secundaria" selected="@Model.NivelAcademico == "Secundaria"">Secundaria</option>
+                                <option value="Universidad" selected="@Model.NivelAcademico == "Universidad"">Universidad</option>
+                                <option value="Postgrado" selected="@Model.NivelAcademico == "Postgrado"">Postgrado</option>
+                            </select>
+                            <span asp-validation-for="NivelAcademico" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Institucion" class="form-label"></label>
+                            <input asp-for="Institucion" class="form-control" />
+                            <span asp-validation-for="Institucion" class="text-danger"></span>
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">Guardar Cambios</button>
                             <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

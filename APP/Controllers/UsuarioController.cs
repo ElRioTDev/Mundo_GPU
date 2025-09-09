@@ -53,17 +53,21 @@ namespace APP.Controllers
             {
                 string mensajeError;
                 bool exito = _db.RegistrarUsuario(
-                    usuario.Username,
-                    usuario.Password,
-                    usuario.Nombre,
-                    usuario.Apellido,
-                    usuario.Sexo,
-                    out mensajeError // Captura el error exacto
-                );
+                usuario.Username,
+                usuario.Password,
+                usuario.Nombre,
+                usuario.Apellido,
+                usuario.Sexo,
+                usuario.NivelAcademico, // string del combobox
+                usuario.Institucion,    // string de la institución
+                usuario.Rol,            // rol
+                out mensajeError
+            );
+            
+
 
                 if (!exito)
                 {
-                    // Mostrar el error exacto en la vista
                     ModelState.AddModelError("", mensajeError);
                     return View(usuario);
                 }
@@ -101,17 +105,16 @@ namespace APP.Controllers
             try
             {
                 string mensajeError;
-                bool exito = _db.ActualizarUsuario(usuario, out mensajeError); // Usar el método corregido
+                bool exito = _db.ActualizarUsuario(usuario, out mensajeError);
 
                 if (!exito)
                 {
-                    // Mostrar mensaje de error exacto en la vista
                     ModelState.AddModelError("", mensajeError);
                     return View(usuario);
                 }
 
                 TempData["Success"] = "Usuario actualizado correctamente.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -120,61 +123,24 @@ namespace APP.Controllers
             }
         }
 
-       // ======================= ELIMINAR USUARIO =======================
-public bool EliminarUsuario(int id)
-{
-    try
-    {
-        using (var conn = GetConnection())
+        // =================== Eliminar usuario ===================
+        public IActionResult Delete(int id)
         {
-            conn.Open();
-            using (var tran = conn.BeginTransaction())
+            try
             {
-                try
-                {
-                    // 1️⃣ Eliminar registros asociados en Nivel_Academico
-                    string deleteNivel = @"DELETE FROM Nivel_Academico WHERE Usuario_id=@id";
-                    using (var cmdNivel = new MySqlCommand(deleteNivel, conn, tran))
-                    {
-                        cmdNivel.Parameters.AddWithValue("@id", id);
-                        cmdNivel.ExecuteNonQuery();
-                    }
-
-                    // 2️⃣ Eliminar el usuario
-                    string deleteUser = "DELETE FROM user WHERE idUSER=@id";
-                    using (var cmdUser = new MySqlCommand(deleteUser, conn, tran))
-                    {
-                        cmdUser.Parameters.AddWithValue("@id", id);
-                        cmdUser.ExecuteNonQuery();
-                    }
-
-                    // 3️⃣ Eliminar el registro en Generales asociado al usuario
-                    string deleteGenerales = @"DELETE FROM Generales 
-                                               WHERE idGeneral NOT IN (SELECT Generales_idGeneral FROM user)";
-                    using (var cmdGen = new MySqlCommand(deleteGenerales, conn, tran))
-                    {
-                        cmdGen.ExecuteNonQuery();
-                    }
-
-                    tran.Commit();
-                    return true;
-                }
-                catch (Exception exTran)
-                {
-                    tran.Rollback();
-                    Console.WriteLine("Error al eliminar usuario: " + exTran.Message);
-                    return false;
-                }
+                bool exito = _db.EliminarUsuario(id);
+                if (!exito)
+                    TempData["Error"] = "No se pudo eliminar el usuario.";
+                else
+                    TempData["Success"] = "Usuario eliminado correctamente.";
             }
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Error al eliminar usuario: " + ex.Message);
-        return false;
-    }
-}
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al eliminar usuario: " + ex.Message;
+            }
 
+            return RedirectToAction(nameof(Index));
+        }
 
         // =================== Detalles de usuario ===================
         public IActionResult Details(int id)
@@ -189,11 +155,13 @@ public bool EliminarUsuario(int id)
             return View(usuario);
         }
 
+        // =================== Página principal de usuarios ===================
         public IActionResult Main()
         {
             return View();
         }
 
+        // =================== Buscar usuarios ===================
         [HttpGet]
         public IActionResult Search(string searchTerm)
         {
@@ -203,6 +171,8 @@ public bool EliminarUsuario(int id)
             {
                 lista = lista.FindAll(u =>
                     u.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                     u.Id.ToString() == searchTerm
                 );
             }

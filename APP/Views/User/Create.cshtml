@@ -15,7 +15,7 @@
                     @* Mostrar errores generales *@
                     @if (ViewData.ModelState != null && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
                     {
-                        foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors).Where(e => e != null))
+                        foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                         {
                             <div class="alert alert-danger">@error.ErrorMessage</div>
                         }
@@ -23,18 +23,18 @@
 
                     <form method="post" asp-action="Create">
                         <div class="mb-3">
-                            <label for="Nombre" class="form-label">Nombre</label>
-                            <input asp-for="Nombre" class="form-control" id="Nombre" required />
+                            <label asp-for="Nombre" class="form-label">Nombre</label>
+                            <input asp-for="Nombre" class="form-control" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="Apellido" class="form-label">Apellido</label>
-                            <input asp-for="Apellido" class="form-control" id="Apellido" required />
+                            <label asp-for="Apellido" class="form-label">Apellido</label>
+                            <input asp-for="Apellido" class="form-control" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="Sexo" class="form-label">Sexo</label>
-                            <select asp-for="Sexo" class="form-select" id="Sexo" required>
+                            <label asp-for="Sexo" class="form-label">Sexo</label>
+                            <select asp-for="Sexo" class="form-select" required>
                                 <option value="">-- Seleccione --</option>
                                 <option value="M" selected="@Model?.Sexo == "M"">Masculino</option>
                                 <option value="F" selected="@Model?.Sexo == "F"">Femenino</option>
@@ -42,23 +42,40 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="Username" class="form-label">Nombre de Usuario</label>
-                            <input asp-for="Username" class="form-control" id="Username" maxlength="16" required />
+                            <label asp-for="Username" class="form-label">Nombre de Usuario</label>
+                            <input asp-for="Username" class="form-control" maxlength="16" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="Password" class="form-label">Contraseña</label>
-                            <input asp-for="Password" type="password" class="form-control" id="Password" maxlength="32" required />
+                            <label asp-for="Password" class="form-label">Contraseña</label>
+                            <input asp-for="Password" type="password" class="form-control" maxlength="32" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="Rol" class="form-label">Rol</label>
-                            <select asp-for="Rol" class="form-select" id="Rol" required>
+                            <label asp-for="Rol" class="form-label">Rol</label>
+                            <select asp-for="Rol" class="form-select" required>
                                 <option value="">-- Seleccione rol --</option>
                                 <option value="ADMIN" selected="@Model?.Rol == "ADMIN"">ADMIN</option>
                                 <option value="EMPLEADO" selected="@Model?.Rol == "EMPLEADO"">EMPLEADO</option>
                                 <option value="ENCARGADO" selected="@Model?.Rol == "ENCARGADO"">ENCARGADO</option>
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NivelAcademico" class="form-label">Nivel Académico</label>
+                            <select asp-for="NivelAcademico" class="form-select" required>
+                                <option value="">-- Seleccione nivel --</option>
+                                <option value="Primaria" selected="@Model?.NivelAcademico == "Primaria"">Primaria</option>
+                                <option value="Secundaria" selected="@Model?.NivelAcademico == "Secundaria"">Secundaria</option>
+                                <option value="Preuniversitario" selected="@Model?.NivelAcademico == "Preuniversitario"">Preuniversitario</option>
+                                <option value="Universitario" selected="@Model?.NivelAcademico == "Universitario"">Universitario</option>
+                                <option value="Postgrado" selected="@Model?.NivelAcademico == "Postgrado"">Postgrado</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Institucion" class="form-label">Institución</label>
+                            <input asp-for="Institucion" class="form-control" maxlength="100" placeholder="Nombre de la institución" />
                         </div>
 
                         <div class="d-grid gap-2">

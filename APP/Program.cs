@@ -2,13 +2,14 @@ using APP.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios MVC
+// ================== Agregar servicios ==================
+// MVC con vistas
 builder.Services.AddControllersWithViews();
 
 // Registrar ConexionMySql como servicio Scoped
 builder.Services.AddScoped<ConexionMySql>();
 
-// Configurar sesión
+// Configurar sesiones en memoria
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -19,7 +20,7 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Configurar pipeline HTTP
+// ================== Pipeline HTTP ==================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -31,14 +32,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Debe ir antes de UseAuthorization
+// Debe ir antes de UseAuthorization para que las sesiones funcionen
 app.UseSession();
 
 app.UseAuthorization();
 
-// Configurar rutas MVC
+// ================== Rutas MVC ==================
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();
