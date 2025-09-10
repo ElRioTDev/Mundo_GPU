@@ -44,6 +44,15 @@
                     <a href="@Url.Action("Delete", "Gpu", new { id = Model.IdGPU })" class="btn btn-danger flex-grow-1">Borrar</a>
                 }
             </div>
+
+            @if (rolUsuario == "ADMIN" || rolUsuario == "ENCARGADO")
+            {
+                <a href="@Url.Action("ExportSingleGpuToExcel", "GPUExport", new { id = Model.IdGPU })" 
+                class="btn btn-success flex-grow-1">
+                    Exportar a Excel
+                </a>    
+            }
+
         </div>
     </div>
 </div>

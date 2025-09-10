@@ -2,17 +2,26 @@
     ViewData["Title"] = "Menú Principal";
 }
 
-<h2>Menú Principal</h2>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Menú Principal</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead">Desde aquí puedes acceder a todas las acciones del CRUD de usuarios:</p>
 
-<p>Desde aquí puedes acceder a todas las acciones del CRUD de usuarios:</p>
-
-<div class="btn-group-vertical">
-    <a asp-controller="User" asp-action="Index" class="btn btn-primary mb-2">Lista de Usuarios</a>
-    <a asp-controller="User" asp-action="Create" class="btn btn-success mb-2">Crear Nuevo Usuario</a>
-    <a asp-controller="User" asp-action="Edit" asp-route-id="1" class="btn btn-warning mb-2">Editar Usuario Ejemplo</a>
-    <a asp-controller="User" asp-action="Details" asp-route-id="1" class="btn btn-info mb-2">Detalles de Usuario Ejemplo</a>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                <div class="col">
+                    <a asp-controller="User" asp-action="Index" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-list-ul me-2"></i> Lista de Usuarios
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-controller="User" asp-action="Create" class="btn btn-outline-success w-100">
+                        <i class="bi bi-person-plus me-2"></i> Crear Nuevo Usuario
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<p class="text-muted">
-    Nota: Para Editar o Detalles, reemplaza el ID con un usuario válido desde la base de datos.
-</p>
