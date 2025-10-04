@@ -9,89 +9,89 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = APP
 build_property.RootNamespace = APP
-build_property.ProjectDir = /media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/
+build_property.ProjectDir = C:\xampp\htdocs\Mundo GPU\APP\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP
+build_property.MSBuildProjectDirectory = C:\xampp\htdocs\Mundo GPU\APP
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/GPU/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR1BVL0NyZWF0ZS5jc2h0bWw=
+[C:/xampp/htdocs/Mundo GPU/APP/Views/GPU/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1BVXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/GPU/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR1BVL0RldGFpbHMuY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/GPU/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1BVXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/GPU/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR1BVL0VkaXQuY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/GPU/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1BVXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/GPU/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR1BVL2luZGV4LmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/GPU/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR1BVXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Login/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTG9naW4vaW5kZXguY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Login/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5caW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Registro/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaXN0cm8vaW5kZXguY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Registro/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaXN0cm9caW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Shared/_layoutNEO.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19sYXlvdXRORU8uY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Shared/_layoutNEO.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9sYXlvdXRORU8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/User/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9DcmVhdGUuY3NodG1s
+[C:/xampp/htdocs/Mundo GPU/APP/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/User/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9EZXRhaWxzLmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/User/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/User/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9FZGl0LmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/User/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9pbmRleC5jc2h0bWw=
+[C:/xampp/htdocs/Mundo GPU/APP/Views/User/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/User/Main.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9NYWluLmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/User/Main.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxNYWluLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/xampp/htdocs/Mundo GPU/APP/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/xampp/htdocs/Mundo GPU/APP/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/media/luis/460EE6630EE64B8D/xampp/htdocs/Mundo GPU/APP/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-pgw9zcxo0u
+[C:/xampp/htdocs/Mundo GPU/APP/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-sara90ikyu
