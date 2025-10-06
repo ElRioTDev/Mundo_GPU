@@ -1,0 +1,45 @@
+/* src/pages/User/Details.css */
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+dl.row {
+    margin-bottom: 0;
+}
+
+dt {
+    font-weight: 600;
+}
+
+dd {
+    margin-bottom: 0.75rem;
+}
+
+.btn-warning, .btn-secondary {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-secondary:hover {
+    background-color: #6c757d;
+}
+
+.d-flex.gap-2 {
+    margin-top: 1rem;
+}

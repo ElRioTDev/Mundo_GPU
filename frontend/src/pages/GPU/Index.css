@@ -1,0 +1,20 @@
+h5.card-title {
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.95rem;
+}
+
+.btn {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+}
+
+.d-flex.gap-2 {
+    margin-top: 10px;
+}
+
+.btn-success {
+    white-space: nowrap;
+}

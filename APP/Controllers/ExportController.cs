@@ -4,56 +4,55 @@ using APP.Models;
 using APP.Filters;
 using APP.Services;
 using System.Collections.Generic;
-using System.IO;
-using System;
 using System.Linq;
+using System;
 
-[ApiController]
-[Route("api/export")]
-[AuthorizeSession("ADMIN", "ENCARGADO")] // Solo roles con permiso
-public class GPUExportController : ControllerBase
+namespace APP.Controllers
 {
-    private readonly ConexionMySql _db;
-    private readonly IExcelExportService _excelExportService;
-
-    public GPUExportController(ConexionMySql db, IExcelExportService excelExportService)
+    [ApiController]
+    [Route("api/export")]
+    [AuthorizeSession("ADMIN", "ENCARGADO")] // Solo roles con permiso
+    public class GPUExportController : ControllerBase
     {
-        _db = db;
-        _excelExportService = excelExportService;
-    }
+        private readonly ConexionMySql _db;
+        private readonly IExcelExportService _excelExportService;
 
-    [HttpGet("gpus/excel")]
-    public IActionResult ExportGPUsToExcel()
-    {
-        var gpus = _db.ObtenerGPUs();
-
-        if (gpus == null || !gpus.Any())
+        public GPUExportController(ConexionMySql db, IExcelExportService excelExportService)
         {
-            return NotFound("No se encontraron GPUs para exportar.");
+            _db = db;
+            _excelExportService = excelExportService;
         }
 
-        // Exportar directamente usando el modelo Gpu
-        var excelData = _excelExportService.ExportGPUsToExcel(gpus);
+        // --- Exportar todas las GPUs a Excel
+        [HttpGet("gpus/excel")]
+        public IActionResult ExportGPUsToExcel()
+        {
+            var gpus = _db.ObtenerGPUs();
 
-        return File(excelData,
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $"GPUs_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+            if (gpus == null || !gpus.Any())
+                return NotFound(new { error = "No se encontraron GPUs para exportar." });
+
+            var excelData = _excelExportService.ExportGPUsToExcel(gpus);
+
+            return File(excelData,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        $"GPUs_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
+
+        // --- Exportar GPU individual a Excel
+        [HttpGet("gpu/{id}/excel")]
+        public IActionResult ExportSingleGpuToExcel(int id)
+        {
+            var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
+
+            if (gpu == null)
+                return NotFound(new { error = "GPU no encontrada." });
+
+            var excelData = _excelExportService.ExportGPUsToExcel(new List<Gpu> { gpu });
+
+            return File(excelData,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        $"GPU_{gpu.Modelo}_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+        }
     }
-
-    [HttpGet("gpu/{id}/excel")]
-    public IActionResult ExportSingleGpuToExcel(int id)
-    {
-        var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
-
-        if (gpu == null)
-            return NotFound("GPU no encontrada.");
-
-        var excelData = _excelExportService.ExportGPUsToExcel(new List<Gpu> { gpu });
-
-        return File(excelData,
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $"GPU_{gpu.Modelo}_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
-    }
-
-
 }

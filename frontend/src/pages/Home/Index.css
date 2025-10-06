@@ -1,0 +1,20 @@
+h1 {
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.btn-primary {
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}

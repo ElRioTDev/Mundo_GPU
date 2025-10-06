@@ -1,0 +1,10 @@
+h2 { font-weight: bold; }
+
+.list-group-item { font-size: 1rem; }
+
+.btn-secondary, .btn-warning, .btn-danger, .btn-success { 
+    padding: 10px; 
+    font-size: 1rem; 
+}
+
+.d-flex.gap-2 { margin-top: 10px; }

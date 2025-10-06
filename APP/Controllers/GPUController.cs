@@ -4,45 +4,42 @@ using APP.Models;
 using APP.Filters;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 
 namespace APP.Controllers
 {
-    [AuthorizeSession("ADMIN", "ENCARGADO", "EMPLEADO")] // Todos deben tener sesión
-    public class GpuController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [AuthorizeSession("ADMIN", "ENCARGADO", "EMPLEADO")]
+    public class GpuApiController : ControllerBase
     {
         private readonly ConexionMySql _db;
 
-        public GpuController(ConexionMySql db)
+        public GpuApiController(ConexionMySql db)
         {
             _db = db;
         }
 
-        private List<Proveedor> ObtenerProveedores()
+        // DTO para recibir GPU + proveedor opcional
+        public class GpuCreateEditDTO
         {
-            return _db.ObtenerGPUs()
-                      .Select(g => g.Proveedor)
-                      .Where(p => p != null)
-                      .GroupBy(p => p.IdProveedor)
-                      .Select(g => g.First())
-                      .ToList();
+            public Gpu Gpu { get; set; }
+            public Proveedor Proveedor { get; set; } // Opcional
         }
 
-        // --- LECTURA (todos los roles pueden)
-        public IActionResult Index()
+        // --- LISTAR TODAS LAS GPUs
+        [HttpGet]
+        public IActionResult GetGPUs()
         {
             var lista = _db.ObtenerGPUs() ?? new List<Gpu>();
-            if (lista.Count == 0)
-                ViewBag.Error = "No se encontraron GPUs.";
-
-            return View(lista);
+            return Ok(lista);
         }
 
-        [HttpPost]
-        public IActionResult Find(string searchTerm)
+        // --- BUSCAR POR TÉRMINO
+        [HttpGet("search")]
+        public IActionResult Search([FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
-                return RedirectToAction("Index");
+                return BadRequest(new { error = "Debe enviar searchTerm" });
 
             var lista = _db.ObtenerGPUs();
             var resultados = lista
@@ -51,190 +48,81 @@ namespace APP.Controllers
                 .ToList();
 
             if (resultados.Count == 0)
-                ViewBag.Error = $"No se encontraron GPUs con '{searchTerm}'.";
+                return NotFound(new { error = $"No se encontraron GPUs con '{searchTerm}'." });
 
-            return View("Index", resultados);
+            return Ok(resultados);
         }
 
-        public IActionResult Details(int id)
+        // --- OBTENER GPU POR ID
+        [HttpGet("{id}")]
+        public IActionResult GetGPU(int id)
         {
             var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
-            if (gpu == null) return NotFound();
-            return View(gpu);
+            if (gpu == null) return NotFound(new { error = "GPU no encontrada" });
+            return Ok(gpu);
         }
 
-        // --- CREAR (solo ADMIN y ENCARGADO)
-        [AuthorizeSession("ADMIN", "ENCARGADO")]
-        public IActionResult Create()
-        {
-            ViewBag.Proveedores = ObtenerProveedores();
-            return View();
-        }
-
+        // --- CREAR GPU
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [AuthorizeSession("ADMIN", "ENCARGADO")]
-        public IActionResult Create(
-    Gpu gpu,
-    string nuevoProveedorNombre,
-    string nuevoProveedorDireccion,
-    string nuevoProveedorTelefono,
-    string nuevoProveedorEmail)
+        public IActionResult Create([FromBody] GpuCreateEditDTO dto)
         {
-            // DEBUG: Ver datos que llegan
-            Console.WriteLine("=== DATOS RECIBIDOS EN CREATE ===");
-            Console.WriteLine($"GPU: {gpu.Marca} {gpu.Modelo}");
-            Console.WriteLine($"VRAM: {gpu.VRAM}");
-            Console.WriteLine($"NucleosCuda: {gpu.NucleosCuda}");
-            Console.WriteLine($"Precio: {gpu.Precio}");
-            Console.WriteLine($"ProveedorId: {gpu.ProveedoresIdProveedor}");
-            Console.WriteLine($"Nuevo Proveedor Nombre: {nuevoProveedorNombre}");
+            if (dto.Gpu == null)
+                return BadRequest(new { error = "Datos de GPU requeridos" });
 
-            // Detectar si estamos creando un proveedor nuevo
-            bool creandoNuevoProveedor = !string.IsNullOrEmpty(nuevoProveedorNombre);
+            var gpu = dto.Gpu;
+            var proveedor = dto.Proveedor;
 
-            // VALIDACIÓN MANUAL - Ignorar ModelState
-            if (string.IsNullOrEmpty(gpu.Marca)
-                || string.IsNullOrEmpty(gpu.Modelo)
-                || string.IsNullOrEmpty(gpu.VRAM)
-                || gpu.NucleosCuda <= 0
-                || gpu.Precio <= 0
-                || (!creandoNuevoProveedor && gpu.ProveedoresIdProveedor <= 0))
+            if (string.IsNullOrEmpty(gpu.Marca) || string.IsNullOrEmpty(gpu.Modelo) ||
+                string.IsNullOrEmpty(gpu.VRAM) || gpu.NucleosCuda <= 0 || gpu.Precio <= 0)
             {
-                Console.WriteLine("❌ Validación manual falló");
-                ViewBag.Proveedores = ObtenerProveedores();
-                ViewBag.Error = "Por favor complete todos los campos requeridos";
-                return View(gpu);
+                return BadRequest(new { error = "Campos obligatorios incompletos" });
             }
 
-            // Crear objeto Proveedor solo si se enviaron datos
-            Proveedor nuevoProveedor = null;
-            if (creandoNuevoProveedor)
-            {
-                nuevoProveedor = new Proveedor
-                {
-                    Nombre = nuevoProveedorNombre,
-                    Direccion = nuevoProveedorDireccion,
-                    Telefono = nuevoProveedorTelefono,
-                    Email = nuevoProveedorEmail
-                };
-                Console.WriteLine($"✅ Nuevo proveedor creado: {nuevoProveedor.Nombre}");
-            }
+            bool resultado = _db.InsertarGPU(gpu, proveedor);
 
-            // Intentar insertar GPU (y proveedor si aplica)
-            bool resultado = _db.InsertarGPU(gpu, nuevoProveedor);
-            Console.WriteLine($"Resultado inserción: {resultado}");
+            if (!resultado)
+                return StatusCode(500, new { error = "No se pudo insertar la GPU" });
 
-            if (resultado)
-            {
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Error = "No se pudo insertar la GPU.";
-            ViewBag.Proveedores = ObtenerProveedores();
-            return View(gpu);
+            return Ok(gpu);
         }
 
-
-
-
-
-
-
-
-        // --- EDITAR (solo ADMIN y ENCARGADO)
-[AuthorizeSession("ADMIN", "ENCARGADO")]
-public IActionResult Edit(int id)
-{
-    var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
-    if (gpu == null) 
-        return NotFound();
-
-    ViewBag.Proveedores = ObtenerProveedores();
-    return View(gpu);
-}
-
-        // --- EDIT (POST) (solo ADMIN y ENCARGADO)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // --- EDITAR GPU
+        [HttpPut("{id}")]
         [AuthorizeSession("ADMIN", "ENCARGADO")]
-        public IActionResult Edit(
-            Gpu gpu,
-            string nuevoProveedorNombre,
-            string nuevoProveedorDireccion,
-            string nuevoProveedorTelefono,
-            string nuevoProveedorEmail)
+        public IActionResult Edit(int id, [FromBody] GpuCreateEditDTO dto)
         {
-            // DEBUG: datos entrantes
-            Console.WriteLine("=== DATOS RECIBIDOS EN EDIT ===");
-            Console.WriteLine($"IdGPU: {gpu.IdGPU}");
-            Console.WriteLine($"Marca/Modelo: {gpu.Marca} {gpu.Modelo}");
-            Console.WriteLine($"VRAM: {gpu.VRAM}");
-            Console.WriteLine($"Núcleos CUDA: {gpu.NucleosCuda}");
-            Console.WriteLine($"Precio: {gpu.Precio}");
-            Console.WriteLine($"ProveedorId: {gpu.ProveedoresIdProveedor}");
-            Console.WriteLine($"Nuevo Proveedor Nombre: {nuevoProveedorNombre}");
+            if (dto.Gpu == null)
+                return BadRequest(new { error = "Datos de GPU requeridos" });
 
-            // Detectar si estamos creando proveedor nuevo
-            bool creandoNuevoProveedor = !string.IsNullOrEmpty(nuevoProveedorNombre);
+            var gpu = dto.Gpu;
+            gpu.IdGPU = id;
+            var proveedor = dto.Proveedor;
 
-            // VALIDACIÓN MANUAL
-            if (string.IsNullOrEmpty(gpu.Marca)
-                || string.IsNullOrEmpty(gpu.Modelo)
-                || string.IsNullOrEmpty(gpu.VRAM)
-                || gpu.NucleosCuda <= 0
-                || gpu.Precio <= 0
-                || (!creandoNuevoProveedor && gpu.ProveedoresIdProveedor <= 0))
+            if (string.IsNullOrEmpty(gpu.Marca) || string.IsNullOrEmpty(gpu.Modelo) ||
+                string.IsNullOrEmpty(gpu.VRAM) || gpu.NucleosCuda <= 0 || gpu.Precio <= 0)
             {
-                Console.WriteLine("❌ Validación manual falló en Edit");
-                ViewBag.Proveedores = ObtenerProveedores();
-                ViewBag.Error = "Por favor complete todos los campos requeridos";
-                return View(gpu);
+                return BadRequest(new { error = "Campos obligatorios incompletos" });
             }
 
-            // Construir objeto Proveedor nuevo si corresponde
-            Proveedor nuevoProveedor = null;
-            if (creandoNuevoProveedor)
-            {
-                nuevoProveedor = new Proveedor
-                {
-                    Nombre = nuevoProveedorNombre,
-                    Direccion = nuevoProveedorDireccion,
-                    Telefono = nuevoProveedorTelefono,
-                    Email = nuevoProveedorEmail
-                };
-                Console.WriteLine($"✅ Proveedor a insertar: {nuevoProveedor.Nombre}");
-            }
+            bool actualizado = _db.EditarGPU(gpu, proveedor);
 
-            // Llamada al método mejorado que maneja transacción
-            bool actualizado = _db.EditarGPU(gpu, nuevoProveedor);
-            Console.WriteLine($"Resultado actualización: {actualizado}");
+            if (!actualizado)
+                return StatusCode(500, new { error = "No se pudo actualizar la GPU" });
 
-            if (actualizado)
-            {
-                return RedirectToAction("Details", new { id = gpu.IdGPU });
-            }
-
-            // En caso de error, recargar lista y mostrar mensaje
-            ViewBag.Proveedores = ObtenerProveedores();
-            ViewBag.Error = "No se pudo actualizar la GPU.";
-            return View(gpu);
+            return Ok(gpu);
         }
 
-
-
-
-
-
-
-        // --- ELIMINAR (solo ADMIN)
+        // --- ELIMINAR GPU
+        [HttpDelete("{id}")]
         [AuthorizeSession("ADMIN")]
         public IActionResult Delete(int id)
         {
-            _db.EliminarGPU(id);
-            return RedirectToAction("Index");
+            bool eliminado = _db.EliminarGPU(id);
+            if (!eliminado)
+                return StatusCode(500, new { error = "No se pudo eliminar la GPU" });
+
+            return Ok(new { message = "GPU eliminada" });
         }
-
-
     }
 }

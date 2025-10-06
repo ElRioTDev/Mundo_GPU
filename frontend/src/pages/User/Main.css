@@ -1,0 +1,12 @@
+.card-header h2 {
+  font-weight: bold;
+}
+
+.card-body .lead {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn i {
+  vertical-align: middle;
+}

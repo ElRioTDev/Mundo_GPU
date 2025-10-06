@@ -1,44 +1,41 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using APP.Models;
 using Microsoft.AspNetCore.Http;
+using APP.Models;
+using System.Diagnostics;
 
 namespace APP.Controllers
 {
-    public class HomeController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HomeApiController : ControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeApiController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeApiController(ILogger<HomeApiController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        // --- Obtener rol actual del usuario desde sesión
+        [HttpGet("rol")]
+        public IActionResult GetRol()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (!string.IsNullOrEmpty(rol))
+            if (string.IsNullOrEmpty(rol))
+                return Ok(new { rol = "Invitado" });
+
+            return Ok(new { rol });
+        }
+
+        // --- Endpoint de prueba de error (opcional)
+        [HttpGet("error")]
+        public IActionResult GetError()
+        {
+            var error = new ErrorViewModel
             {
-                return RedirectToAction("Index", "Gpu");
-            }
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult AccesoDenegado()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return Ok(error);
         }
     }
 }

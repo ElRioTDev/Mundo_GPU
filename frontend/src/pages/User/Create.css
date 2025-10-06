@@ -1,0 +1,35 @@
+.card {
+    border-radius: 12px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    background-color: #0d6efd;
+    color: white;
+    text-align: center;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.btn-primary, .btn-secondary {
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.d-grid.gap-2 {
+    gap: 10px;
+}

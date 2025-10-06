@@ -7,43 +7,69 @@ using System.Collections.Generic;
 
 namespace APP.Controllers
 {
-    [AuthorizeSession("ADMIN")]
-    public class UserController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [AuthorizeSession("ADMIN")] // Solo ADMIN
+    public class UserApiController : ControllerBase
     {
         private readonly ConexionMySql _db;
 
-        public UserController(ConexionMySql db)
+        public UserApiController(ConexionMySql db)
         {
             _db = db;
         }
 
-        public IActionResult Index()
+        // --- LISTAR USUARIOS
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            List<Usuario> lista = new List<Usuario>();
-
             try
             {
-                lista = _db.ObtenerUsuarios() ?? new List<Usuario>();
+                var lista = _db.ObtenerUsuarios() ?? new List<Usuario>();
+                return Ok(lista);
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al cargar los usuarios: " + ex.Message;
+                return StatusCode(500, new { error = "Error al cargar los usuarios: " + ex.Message });
+            }
+        }
+
+        // --- OBTENER USUARIO POR ID
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var usuario = _db.ObtenerUsuarioPorId(id);
+            if (usuario == null)
+                return NotFound(new { error = "Usuario no encontrado" });
+
+            return Ok(usuario);
+        }
+
+        // --- BUSCAR USUARIOS
+        [HttpGet("search")]
+        public IActionResult Search([FromQuery] string searchTerm)
+        {
+            var lista = _db.ObtenerUsuarios() ?? new List<Usuario>();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                lista = lista.FindAll(u =>
+                    u.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.Id.ToString() == searchTerm
+                );
             }
 
-            return View(lista);
+            return Ok(lista);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
+        // --- CREAR USUARIO
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Usuario usuario)
+        public IActionResult Create([FromBody] Usuario usuario)
         {
-            if (!ModelState.IsValid)
-                return View(usuario);
+            if (usuario == null)
+                return BadRequest(new { error = "Datos del usuario requeridos" });
 
             try
             {
@@ -61,39 +87,24 @@ namespace APP.Controllers
                 );
 
                 if (!exito)
-                {
-                    ModelState.AddModelError("", mensajeError);
-                    return View(usuario);
-                }
+                    return BadRequest(new { error = mensajeError });
 
-                TempData["Success"] = "Usuario creado correctamente.";
-                return RedirectToAction(nameof(Index));
+                return Ok(usuario);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Error al crear usuario: " + ex.Message);
-                return View(usuario);
+                return StatusCode(500, new { error = "Error al crear usuario: " + ex.Message });
             }
         }
 
-        public IActionResult Edit(int id)
+        // --- EDITAR USUARIO
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, [FromBody] Usuario usuario)
         {
-            var usuario = _db.ObtenerUsuarioPorId(id);
             if (usuario == null)
-            {
-                TempData["Error"] = "Usuario no encontrado.";
-                return RedirectToAction(nameof(Index));
-            }
+                return BadRequest(new { error = "Datos del usuario requeridos" });
 
-            return View(usuario);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Usuario usuario)
-        {
-            if (!ModelState.IsValid)
-                return View(usuario);
+            usuario.Id = id;
 
             try
             {
@@ -101,72 +112,32 @@ namespace APP.Controllers
                 bool exito = _db.ActualizarUsuario(usuario, out mensajeError);
 
                 if (!exito)
-                {
-                    ModelState.AddModelError("", mensajeError);
-                    return View(usuario);
-                }
+                    return BadRequest(new { error = mensajeError });
 
-                TempData["Success"] = "Usuario actualizado correctamente.";
-                return RedirectToAction(nameof(Index));
+                return Ok(usuario);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Error al actualizar usuario: " + ex.Message);
-                return View(usuario);
+                return StatusCode(500, new { error = "Error al actualizar usuario: " + ex.Message });
             }
         }
 
+        // --- ELIMINAR USUARIO
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
                 bool exito = _db.EliminarUsuario(id);
                 if (!exito)
-                    TempData["Error"] = "No se pudo eliminar el usuario.";
-                else
-                    TempData["Success"] = "Usuario eliminado correctamente.";
+                    return StatusCode(500, new { error = "No se pudo eliminar el usuario" });
+
+                return Ok(new { message = "Usuario eliminado correctamente" });
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al eliminar usuario: " + ex.Message;
+                return StatusCode(500, new { error = "Error al eliminar usuario: " + ex.Message });
             }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Details(int id)
-        {
-            var usuario = _db.ObtenerUsuarioPorId(id);
-            if (usuario == null)
-            {
-                TempData["Error"] = "Usuario no encontrado.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(usuario);
-        }
-
-        public IActionResult Main()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Search(string searchTerm)
-        {
-            List<Usuario> lista = _db.ObtenerUsuarios() ?? new List<Usuario>();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                lista = lista.FindAll(u =>
-                    u.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    u.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    u.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    u.Id.ToString() == searchTerm
-                );
-            }
-
-            return View("Index", lista);
         }
     }
 }
