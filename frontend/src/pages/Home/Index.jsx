@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Index.css'; 
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Index.css";
 
 export default function HomeIndex() {
     return (

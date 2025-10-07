@@ -25,7 +25,7 @@ namespace APP.Data
             {
                 using var conn = GetConnection();
                 conn.Open();
-                // ✅ Ya no necesitamos el idUSER
+                // Ya no necesitamos el idUSER
                 string query = "SELECT username, rol FROM user WHERE username=@usuario AND password=@password LIMIT 1";
                 using var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@usuario", usuario);
@@ -36,7 +36,7 @@ namespace APP.Data
                 {
                     user = new Usuario
                     {
-                        // ❌ Ya no usamos Id
+                        //Ya no usamos Id
                         Username = reader.GetString("username"),
                         Rol = reader.GetString("rol")
                     };

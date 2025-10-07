@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
 using APP.Models;
-using APP.Filters;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace APP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AuthorizeSession("ADMIN", "ENCARGADO", "EMPLEADO")]
+    [Authorize] // Requiere JWT para todos los endpoints
     public class GpuApiController : ControllerBase
     {
         private readonly ConexionMySql _db;
@@ -31,7 +32,28 @@ namespace APP.Controllers
         public IActionResult GetGPUs()
         {
             var lista = _db.ObtenerGPUs() ?? new List<Gpu>();
-            return Ok(lista);
+
+            // Mapeo explícito para asegurar que todos los campos estén presentes
+            var result = lista.Select(g => new
+            {
+                g.IdGPU,
+                g.Marca,
+                g.Modelo,
+                g.VRAM,
+                g.NucleosCuda,
+                g.Precio,
+                g.Imagen,
+                g.RayTracing
+            }).ToList();
+
+            // Log de depuración
+            Console.WriteLine("[GpuApiController] GetGPUs:");
+            foreach (var gpu in result)
+            {
+                Console.WriteLine($"IdGPU={gpu.IdGPU}, Marca={gpu.Marca}, Modelo={gpu.Modelo}, VRAM={gpu.VRAM}, NucleosCUDA={gpu.NucleosCuda}, Precio={gpu.Precio}");
+            }
+
+            return Ok(result);
         }
 
         // --- BUSCAR POR TÉRMINO
@@ -41,13 +63,24 @@ namespace APP.Controllers
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return BadRequest(new { error = "Debe enviar searchTerm" });
 
-            var lista = _db.ObtenerGPUs();
+            var lista = _db.ObtenerGPUs() ?? new List<Gpu>();
             var resultados = lista
                 .Where(gpu => !string.IsNullOrEmpty(gpu.Modelo) &&
                               gpu.Modelo.ToLower().Contains(searchTerm.ToLower()))
+                .Select(g => new
+                {
+                    g.IdGPU,
+                    g.Marca,
+                    g.Modelo,
+                    g.VRAM,
+                    g.NucleosCuda,
+                    g.Precio,
+                    g.Imagen,
+                    g.RayTracing
+                })
                 .ToList();
 
-            if (resultados.Count == 0)
+            if (!resultados.Any())
                 return NotFound(new { error = $"No se encontraron GPUs con '{searchTerm}'." });
 
             return Ok(resultados);
@@ -58,13 +91,27 @@ namespace APP.Controllers
         public IActionResult GetGPU(int id)
         {
             var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
+
             if (gpu == null) return NotFound(new { error = "GPU no encontrada" });
-            return Ok(gpu);
+
+            var result = new
+            {
+                gpu.IdGPU,
+                gpu.Marca,
+                gpu.Modelo,
+                gpu.VRAM,
+                gpu.NucleosCuda,
+                gpu.Precio,
+                gpu.Imagen,
+                gpu.RayTracing
+            };
+
+            return Ok(result);
         }
 
-        // --- CREAR GPU
+        // --- CREAR GPU (solo ADMIN y ENCARGADO)
         [HttpPost]
-        [AuthorizeSession("ADMIN", "ENCARGADO")]
+        [Authorize(Roles = "ADMIN,ENCARGADO")]
         public IActionResult Create([FromBody] GpuCreateEditDTO dto)
         {
             if (dto.Gpu == null)
@@ -84,12 +131,22 @@ namespace APP.Controllers
             if (!resultado)
                 return StatusCode(500, new { error = "No se pudo insertar la GPU" });
 
-            return Ok(gpu);
+            return Ok(new
+            {
+                gpu.IdGPU,
+                gpu.Marca,
+                gpu.Modelo,
+                gpu.VRAM,
+                gpu.NucleosCuda,
+                gpu.Precio,
+                gpu.Imagen,
+                gpu.RayTracing
+            });
         }
 
-        // --- EDITAR GPU
+        // --- EDITAR GPU (solo ADMIN y ENCARGADO)
         [HttpPut("{id}")]
-        [AuthorizeSession("ADMIN", "ENCARGADO")]
+        [Authorize(Roles = "ADMIN,ENCARGADO")]
         public IActionResult Edit(int id, [FromBody] GpuCreateEditDTO dto)
         {
             if (dto.Gpu == null)
@@ -110,12 +167,22 @@ namespace APP.Controllers
             if (!actualizado)
                 return StatusCode(500, new { error = "No se pudo actualizar la GPU" });
 
-            return Ok(gpu);
+            return Ok(new
+            {
+                gpu.IdGPU,
+                gpu.Marca,
+                gpu.Modelo,
+                gpu.VRAM,
+                gpu.NucleosCuda,
+                gpu.Precio,
+                gpu.Imagen,
+                gpu.RayTracing
+            });
         }
 
-        // --- ELIMINAR GPU
+        // --- ELIMINAR GPU (solo ADMIN)
         [HttpDelete("{id}")]
-        [AuthorizeSession("ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Delete(int id)
         {
             bool eliminado = _db.EliminarGPU(id);

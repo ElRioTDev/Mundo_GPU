@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getGPUs } from '../../api/gpus';
+import { getGPUs } from '../../api/gpus'; // <-- ruta corregida
+import { useAuth } from '../../components/AuthContext'; // <-- ruta corregida
 import './Index.css';
 
-export default function GPUIndex({ userRole }) {
+export default function GPUIndex() {
+    const { userRole } = useAuth(); // obtenemos el rol desde el contexto
+
     const [gpus, setGpus] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState('');
@@ -11,11 +14,13 @@ export default function GPUIndex({ userRole }) {
     useEffect(() => {
         async function fetchData() {
             try {
+                console.log('[GPUIndex] Llamando a getGPUs...');
                 const data = await getGPUs();
-                setGpus(data);
+                console.log('[GPUIndex] Datos recibidos:', data);
+                setGpus(Array.isArray(data) ? data : []);
             } catch (err) {
-                console.error(err);
-                setError('Error cargando GPUs');
+                console.error('[GPUIndex] Error cargando GPUs:', err);
+                setError('Error cargando GPUs desde el servidor.');
             }
         }
         fetchData();
@@ -23,27 +28,28 @@ export default function GPUIndex({ userRole }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Si quieres hacer búsqueda en frontend
-        // const filtered = gpus.filter(g => g.Modelo.toLowerCase().includes(searchTerm.toLowerCase()));
-        // setGpus(filtered);
-
-        // Si la búsqueda es en backend, se haría llamada API aquí
-        console.log('Buscar GPU:', searchTerm);
+        console.log('[GPUIndex] Buscar GPU:', searchTerm);
+        // Aquí puedes agregar búsqueda backend: llamar searchGPU(searchTerm) y setGpus(resultado)
     };
+
+    // Definimos permisos según rol
+    const canCreate = userRole === 'ADMIN' || userRole === 'ENCARGADO';
+    const canEdit = userRole === 'ADMIN' || userRole === 'ENCARGADO';
+    const canDelete = userRole === 'ADMIN';
 
     return (
         <div className="container mt-4">
 
-            {/* Botones superiores */}
+            {/* Botones superiores según rol */}
             <div className="mb-3 d-flex flex-wrap gap-2">
                 {userRole === 'ADMIN' && (
-                    <>
-                        <Link to="/user/main" className="btn btn-success">Ir al Menú Principal</Link>
-                        <Link to="/gpu/create" className="btn btn-primary">Añadir GPU</Link>
-                    </>
+                    <Link to="/user/main" className="btn btn-success">Menú Principal</Link>
+                )}
+                {canCreate && (
+                    <Link to="/gpu/create" className="btn btn-primary">Añadir GPU</Link>
                 )}
                 {(userRole === 'ADMIN' || userRole === 'ENCARGADO') && (
-                    <a href="/api/export/gpus/excel" className="btn btn-success">Exportar lista completa a Excel</a>
+                    <a href="/api/export/gpus/excel" className="btn btn-success">Exportar a Excel</a>
                 )}
             </div>
 
@@ -69,28 +75,41 @@ export default function GPUIndex({ userRole }) {
 
             {/* Lista de GPUs */}
             <div className="row">
-                {gpus.map(item => (
-                    <div key={item.IdGPU} className="col-sm-6 col-md-4 col-lg-3 mb-4">
+                {gpus.length === 0 && !error && (
+                    <div className="col-12 text-center">No hay GPUs disponibles.</div>
+                )}
+
+                {gpus.map((item, index) => (
+                    <div key={item?.idGPU ?? index} className="col-sm-6 col-md-4 col-lg-3 mb-4">
                         <div className="card h-100 shadow-sm">
-                            <img src={item.Imagen} className="card-img-top" alt={item.Modelo} style={{ height: '180px', objectFit: 'cover' }} />
+                            <img
+                                src={item?.imagen || '/placeholder.png'}
+                                className="card-img-top"
+                                alt={item?.modelo || 'GPU'}
+                                style={{ height: '180px', objectFit: 'cover' }}
+                            />
                             <div className="card-body d-flex flex-column">
-                                <h5 className="card-title">{item.Modelo}</h5>
-                                <p className="card-text mb-1">Marca: {item.Marca}</p>
-                                <p className="card-text mb-2">VRAM: {item.VRAM}</p>
-                                <p className="card-text mb-2">Núcleos CUDA: {item.NucleosCuda}</p>
-                                <p className="card-text mb-3">RayTracing: {item.RayTracing ? 'Sí' : 'No'}</p>
-                                <p className="card-text fw-bold mb-3">Precio: {item.Precio.toLocaleString('es-ES', { style: 'currency', currency: 'USD' })}</p>
+                                <h5 className="card-title">{item?.modelo || 'Desconocido'}</h5>
+                                <p className="card-text mb-1">Marca: {item?.marca || 'N/A'}</p>
+                                <p className="card-text mb-2">VRAM: {item?.vram || 'N/A'}</p>
+                                <p className="card-text mb-2">Núcleos CUDA: {item?.nucleosCuda ?? 'N/A'}</p>
+                                <p className="card-text mb-3">RayTracing: {item?.rayTracing ? 'Sí' : 'No'}</p>
+                                <p className="card-text fw-bold mb-3">
+                                    Precio: {item?.precio != null ? 
+                                        item.precio.toLocaleString('es-ES', { style: 'currency', currency: 'USD' }) : 
+                                        'N/A'}
+                                </p>
 
                                 {/* Botones según rol */}
                                 <div className="mt-auto d-flex gap-2">
-                                    <Link to={`/gpu/details/${item.IdGPU}`} className="btn btn-primary flex-grow-1">Detalles</Link>
+                                    <Link to={`/gpuapi/details/${item?.idGPU}`} className="btn btn-primary flex-grow-1">Detalles</Link>
 
-                                    {(userRole === 'ADMIN' || userRole === 'ENCARGADO') && (
-                                        <Link to={`/gpu/edit/${item.IdGPU}`} className="btn btn-warning flex-grow-1">Editar</Link>
+                                    {canEdit && (
+                                        <Link to={`/gpuapi/edit/${item?.idGPU}`} className="btn btn-warning flex-grow-1">Editar</Link>
                                     )}
 
-                                    {userRole === 'ADMIN' && (
-                                        <Link to={`/gpu/delete/${item.IdGPU}`} className="btn btn-danger flex-grow-1">Borrar</Link>
+                                    {canDelete && (
+                                        <Link to={`/gpuapi/delete/${item?.idGPU}`} className="btn btn-danger flex-grow-1">Borrar</Link>
                                     )}
                                 </div>
                             </div>

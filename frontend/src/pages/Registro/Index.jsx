@@ -1,44 +1,44 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { register } from '../../api/auth';
+import { register } from '../../api/register'; // ✅ ahora sí correcto
 import './Index.css';
 
 export default function RegistroIndex() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [form, setForm] = useState({
-        nombre: '',
-        apellido: '',
-        sexo: '',
-        nivelAcademico: '',
-        institucion: '',
-        usuario: '',
-        password: '',
-        confirmarPassword: ''
-    });
+  const [form, setForm] = useState({
+    nombre: '',
+    apellido: '',
+    sexo: '',
+    nivelAcademico: '',
+    institucion: '',
+    usuario: '',
+    password: '',
+    confirmarPassword: ''
+  });
 
-    const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]);
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setErrors([]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors([]);
 
-        if (form.password !== form.confirmarPassword) {
-            setErrors(['Las contraseñas no coinciden']);
-            return;
-        }
+    if (form.password !== form.confirmarPassword) {
+      setErrors(['Las contraseñas no coinciden']);
+      return;
+    }
 
-        try {
-            await register(form); // Llama a tu API de registro
-            navigate('/login'); // Redirige al login al registrarse
-        } catch (err) {
-            setErrors(err.errors || [err.message || 'Error desconocido']);
-        }
-    };
+    try {
+      await register(form);
+      navigate('/login');
+    } catch (err) {
+      setErrors(err.errors || [err.message || 'Error desconocido']);
+    }
+  };
 
     return (
         <div className="container mt-5">

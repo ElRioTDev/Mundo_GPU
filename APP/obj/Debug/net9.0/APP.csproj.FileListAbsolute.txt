@@ -373,3 +373,11 @@ C:\xampp\htdocs\Mundo GPU\APP\obj\Debug\net9.0\refint\APP.dll
 C:\xampp\htdocs\Mundo GPU\APP\obj\Debug\net9.0\APP.pdb
 C:\xampp\htdocs\Mundo GPU\APP\obj\Debug\net9.0\APP.genruntimeconfig.cache
 C:\xampp\htdocs\Mundo GPU\APP\obj\Debug\net9.0\ref\APP.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\xampp\htdocs\Mundo GPU\APP\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

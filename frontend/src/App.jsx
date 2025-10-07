@@ -5,7 +5,7 @@ import PublicRoute from "./components/PublicRoute"; // ✅ Nuevo
 
 import HomeIndex from "./pages/Home/Index";
 import Login from "./pages/Login/Index";
-import Registro from "./pages/Registro/Index"; // ✅ tu página de registro
+import Registro from "./pages/Registro/Index";
 import UserIndex from "./pages/User/Index";
 import GPUIndex from "./pages/GPU/Index";
 

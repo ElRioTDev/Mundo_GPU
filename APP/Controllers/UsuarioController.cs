@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
 using APP.Models;
-using APP.Filters;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AuthorizeSession("ADMIN")] // Solo ADMIN
+    [Authorize(Roles = "ADMIN")] // Solo ADMIN puede acceder
     public class UserApiController : ControllerBase
     {
         private readonly ConexionMySql _db;
@@ -19,7 +19,7 @@ namespace APP.Controllers
             _db = db;
         }
 
-        // --- LISTAR USUARIOS
+        // --- LISTAR USUARIOS ---
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -34,7 +34,7 @@ namespace APP.Controllers
             }
         }
 
-        // --- OBTENER USUARIO POR ID
+        // --- OBTENER USUARIO POR ID ---
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -45,7 +45,7 @@ namespace APP.Controllers
             return Ok(usuario);
         }
 
-        // --- BUSCAR USUARIOS
+        // --- BUSCAR USUARIOS ---
         [HttpGet("search")]
         public IActionResult Search([FromQuery] string searchTerm)
         {
@@ -54,9 +54,9 @@ namespace APP.Controllers
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 lista = lista.FindAll(u =>
-                    u.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    u.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    u.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    (!string.IsNullOrEmpty(u.Nombre) && u.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(u.Apellido) && u.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(u.Username) && u.Username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
                     u.Id.ToString() == searchTerm
                 );
             }
@@ -64,7 +64,7 @@ namespace APP.Controllers
             return Ok(lista);
         }
 
-        // --- CREAR USUARIO
+        // --- CREAR USUARIO ---
         [HttpPost]
         public IActionResult Create([FromBody] Usuario usuario)
         {
@@ -97,7 +97,7 @@ namespace APP.Controllers
             }
         }
 
-        // --- EDITAR USUARIO
+        // --- EDITAR USUARIO ---
         [HttpPut("{id}")]
         public IActionResult Edit(int id, [FromBody] Usuario usuario)
         {
@@ -122,7 +122,7 @@ namespace APP.Controllers
             }
         }
 
-        // --- ELIMINAR USUARIO
+        // --- ELIMINAR USUARIO ---
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

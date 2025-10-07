@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using APP.Data;
-using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace APP.Controllers
 {
@@ -15,7 +20,7 @@ namespace APP.Controllers
             _db = db;
         }
 
-        // --- LOGIN
+        // --- LOGIN ---
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
@@ -27,19 +32,41 @@ namespace APP.Controllers
             if (usuario == null)
                 return Unauthorized(new { error = "Usuario o contraseña incorrectos" });
 
-            // Guardar datos en sesión (opcional, puedes usar JWT más adelante)
-            HttpContext.Session.SetString("Username", usuario.Username);
-            HttpContext.Session.SetString("Rol", usuario.Rol);
+            // --- Generar JWT ---
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, usuario.Username),
+                new Claim("rol", usuario.Rol)
+            };
+         
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1Ys"
+)); // Usa la misma clave que en Program.cs
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddHours(2),
+                signingCredentials: creds);
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return Ok(new
             {
-                message = "Login exitoso",
-                username = usuario.Username,
-                rol = usuario.Rol
+                token = tokenString,
+                user = new { username = usuario.Username, rol = usuario.Rol }
             });
         }
 
-        // --- LOGOUT
+        // --- VALIDAR TOKEN ---
+        [HttpGet("validate")]
+        [Authorize]
+        public IActionResult Validate()
+        {
+            return Ok(new { valid = true });
+        }
+
+        // --- LOGOUT (opcional, solo para limpiar sesión si usas cookies) ---
         [HttpPost("logout")]
         public IActionResult Logout()
         {

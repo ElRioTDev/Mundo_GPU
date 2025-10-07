@@ -5,18 +5,18 @@ namespace APP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegistroApiController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
         private readonly ConexionMySql _db;
 
-        public RegistroApiController(ConexionMySql db)
+        public UsuarioController(ConexionMySql db)
         {
             _db = db;
         }
 
-        // --- REGISTRAR USUARIO
-        [HttpPost("registrar")]
-        public IActionResult Registrar([FromBody] RegistroRequest request)
+        // --- REGISTRAR USUARIO ---
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterRequest request)
         {
             if (request.Password != request.ConfirmarPassword)
                 return BadRequest(new { error = "Las contraseñas no coinciden" });
@@ -44,7 +44,7 @@ namespace APP.Controllers
     }
 
     // DTO para registro
-    public class RegistroRequest
+    public class RegisterRequest
     {
         public string Usuario { get; set; }
         public string Password { get; set; }
