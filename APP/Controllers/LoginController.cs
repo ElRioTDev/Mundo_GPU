@@ -40,7 +40,7 @@ namespace APP.Controllers
             };
          
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1Ys"
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1s1"
 )); // Usa la misma clave que en Program.cs
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

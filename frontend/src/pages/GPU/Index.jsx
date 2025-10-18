@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet, useMatch } from 'react-router-dom';
 import { getGPUs } from '../../api/gpus'; // <-- ruta corregida
 import { useAuth } from '../../components/AuthContext'; // <-- ruta corregida
 import './Index.css';
 
 export default function GPUIndex() {
     const { userRole } = useAuth(); // obtenemos el rol desde el contexto
+    const isAtIndex = useMatch({ path: '/gpu', end: true });
 
     const [gpus, setGpus] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,7 +28,7 @@ export default function GPUIndex() {
     }, []);
 
     const handleSearch = (e) => {
-        e.preventDefault();
+        e?.preventDefault();
         console.log('[GPUIndex] Buscar GPU:', searchTerm);
         // Aquí puedes agregar búsqueda backend: llamar searchGPU(searchTerm) y setGpus(resultado)
     };
@@ -39,84 +40,67 @@ export default function GPUIndex() {
 
     return (
         <div className="container mt-4">
+            {isAtIndex && (
+                <>
+                    {/* Botones superiores según rol */}
+                    <div className="mb-3 d-flex flex-wrap gap-2">
+                        {canCreate && (
+                            <Link to="/gpu/create" className="btn btn-primary">Añadir GPU</Link>
+                        )}
+                    </div>
 
-            {/* Botones superiores según rol */}
-            <div className="mb-3 d-flex flex-wrap gap-2">
-                {userRole === 'ADMIN' && (
-                    <Link to="/user/main" className="btn btn-success">Menú Principal</Link>
-                )}
-                {canCreate && (
-                    <Link to="/gpu/create" className="btn btn-primary">Añadir GPU</Link>
-                )}
-                {(userRole === 'ADMIN' || userRole === 'ENCARGADO') && (
-                    <a href="/api/export/gpus/excel" className="btn btn-success">Exportar a Excel</a>
-                )}
-            </div>
+                    {/* Mensaje de error */}
+                    {error && <div className="alert alert-warning text-center">{error}</div>}
 
-            {/* Formulario de búsqueda */}
-            <form className="row g-3 mb-4" onSubmit={handleSearch}>
-                <div className="col-auto">
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Buscar GPU..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="col-auto">
-                    <button type="submit" className="btn btn-primary mb-3">Buscar</button>
-                </div>
-            </form>
+                    {/* Lista de GPUs */}
+                    <div className="row">
+                        {gpus.length === 0 && !error && (
+                            <div className="col-12 text-center">No hay GPUs disponibles.</div>
+                        )}
 
-            {/* Mensaje de error */}
-            {error && <div className="alert alert-warning text-center">{error}</div>}
+                        {gpus.map((item, index) => (
+                            <div key={item?.idGPU ?? index} className="col-sm-6 col-md-4 col-lg-3 mb-4">
+                                <div className="card h-100 shadow-sm">
+                                    <img
+                                        src={item?.imagen || '/placeholder.png'}
+                                        className="card-img-top"
+                                        alt={item?.modelo || 'GPU'}
+                                        style={{ height: '180px', objectFit: 'cover' }}
+                                    />
+                                    <div className="card-body d-flex flex-column">
+                                        <h5 className="card-title">{item?.modelo || 'Desconocido'}</h5>
+                                        <p className="card-text mb-1">Marca: {item?.marca || 'N/A'}</p>
+                                        <p className="card-text mb-2">VRAM: {item?.vram || 'N/A'}</p>
+                                        <p className="card-text mb-2">Núcleos CUDA: {item?.nucleosCuda ?? 'N/A'}</p>
+                                        <p className="card-text mb-3">RayTracing: {item?.rayTracing ? 'Sí' : 'No'}</p>
+                                        <p className="card-text fw-bold mb-3">
+                                            Precio: {item?.precio != null && typeof item.precio === 'number' ? 
+                                                item.precio.toLocaleString('es-ES', { style: 'currency', currency: 'USD' }) : 
+                                                (item?.precio != null ? item.precio : 'N/A')}
+                                        </p>
 
-            {/* Lista de GPUs */}
-            <div className="row">
-                {gpus.length === 0 && !error && (
-                    <div className="col-12 text-center">No hay GPUs disponibles.</div>
-                )}
+                                        {/* Botones según rol */}
+                                        <div className="mt-auto d-flex gap-2">
+                                            <Link to={`/gpu/details/${item?.idGPU}`} className="btn btn-primary flex-grow-1">Detalles</Link>
 
-                {gpus.map((item, index) => (
-                    <div key={item?.idGPU ?? index} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div className="card h-100 shadow-sm">
-                            <img
-                                src={item?.imagen || '/placeholder.png'}
-                                className="card-img-top"
-                                alt={item?.modelo || 'GPU'}
-                                style={{ height: '180px', objectFit: 'cover' }}
-                            />
-                            <div className="card-body d-flex flex-column">
-                                <h5 className="card-title">{item?.modelo || 'Desconocido'}</h5>
-                                <p className="card-text mb-1">Marca: {item?.marca || 'N/A'}</p>
-                                <p className="card-text mb-2">VRAM: {item?.vram || 'N/A'}</p>
-                                <p className="card-text mb-2">Núcleos CUDA: {item?.nucleosCuda ?? 'N/A'}</p>
-                                <p className="card-text mb-3">RayTracing: {item?.rayTracing ? 'Sí' : 'No'}</p>
-                                <p className="card-text fw-bold mb-3">
-                                    Precio: {item?.precio != null ? 
-                                        item.precio.toLocaleString('es-ES', { style: 'currency', currency: 'USD' }) : 
-                                        'N/A'}
-                                </p>
+                                            {canEdit && (
+                                                <Link to={`/gpu/edit/${item?.idGPU}`} className="btn btn-warning flex-grow-1">Editar</Link>
+                                            )}
 
-                                {/* Botones según rol */}
-                                <div className="mt-auto d-flex gap-2">
-                                    <Link to={`/gpuapi/details/${item?.idGPU}`} className="btn btn-primary flex-grow-1">Detalles</Link>
-
-                                    {canEdit && (
-                                        <Link to={`/gpuapi/edit/${item?.idGPU}`} className="btn btn-warning flex-grow-1">Editar</Link>
-                                    )}
-
-                                    {canDelete && (
-                                        <Link to={`/gpuapi/delete/${item?.idGPU}`} className="btn btn-danger flex-grow-1">Borrar</Link>
-                                    )}
+                                            {canDelete && (
+                                                <Link to={`/gpu/delete/${item?.idGPU}`} className="btn btn-danger flex-grow-1">Borrar</Link>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </>
+            )}
+
+            {/* Aquí se mostrarán las vistas hijas (create, edit, details, delete) */}
+            <Outlet />
         </div>
     );
 }

@@ -1,24 +1,25 @@
+// ...existing code...
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getGPU } from '../../api/gpu';
+// CORRECCIÓN: importar desde 'gpus' (plural)
+import { getGPU } from '../../api/gpus';
+// Usar userRole directamente desde el contexto (coincide con otros componentes)
 import { useAuth } from '../../components/AuthContext';
 import './Details.css';
 
 export default function DetailsGPU() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { user } = useAuth();
-    const userRole = user?.role ?? 'EMPLEADO';
+    const { userRole } = useAuth(); // <-- cambio aquí
+    const role = (userRole || 'EMPLEADO').toUpperCase();
 
     const [gpu, setGpu] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchGPU() {
-            console.log("[DetailsGPU] Llamando getGPU con id:", id);
             try {
                 const data = await getGPU(id);
-                console.log("[DetailsGPU] GPU recibida:", data);
                 setGpu(data);
             } catch (err) {
                 console.error('[DetailsGPU] Error cargando GPU:', err);
@@ -31,6 +32,9 @@ export default function DetailsGPU() {
 
     if (loading) return <div>Cargando...</div>;
     if (!gpu) return <div>GPU no encontrada</div>;
+
+    const canEdit = role === 'ADMIN' || role === 'ENCARGADO';
+    const canDelete = role === 'ADMIN';
 
     return (
         <div className="container mt-5">
@@ -65,24 +69,18 @@ export default function DetailsGPU() {
                     <button className="btn btn-secondary mb-2" onClick={() => navigate('/gpu')}>Volver a la lista</button>
 
                     <div className="d-flex gap-2">
-                        {(userRole === 'ADMIN' || userRole === 'ENCARGADO') && (
+                        {canEdit && (
                             <button className="btn btn-warning flex-grow-1" onClick={() => navigate(`/gpu/edit/${gpu.idGPU}`)}>Editar</button>
                         )}
-                        {userRole === 'ADMIN' && (
+                        {canDelete && (
                             <button className="btn btn-danger flex-grow-1" onClick={() => navigate(`/gpu/delete/${gpu.idGPU}`)}>Borrar</button>
                         )}
                     </div>
 
-                    {(userRole === 'ADMIN' || userRole === 'ENCARGADO') && (
-                        <button 
-                            className="btn btn-success flex-grow-1 mt-2"
-                            onClick={() => window.open(`/api/export/gpu/${gpu.idGPU}/excel`, '_blank')}
-                        >
-                            Exportar a Excel
-                        </button>
-                    )}
+
                 </div>
             </div>
         </div>
     );
 }
+// ...existing code...

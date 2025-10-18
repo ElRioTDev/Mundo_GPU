@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,10 @@ builder.Services.AddSession(options =>
 });
 
 // ================== JWT Authentication ==================
+// Lee la clave desde configuración si existe, si no usa el valor por defecto
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1s1";
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,13 +45,37 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1Ys"))
+        IssuerSigningKey = signingKey,
+        ClockSkew = TimeSpan.Zero,
+        RoleClaimType = "rol" // usar el claim "rol" del JWT como rol para [Authorize(Roles=...)]
+    };
+
+    // Logs útiles en desarrollo
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = ctx =>
+        {
+            Console.WriteLine("[JWT] Authentication failed: " + ctx.Exception?.Message);
+            return System.Threading.Tasks.Task.CompletedTask;
+        },
+        OnTokenValidated = ctx =>
+        {
+            Console.WriteLine("[JWT] Token validated for: " + (ctx.Principal?.Identity?.Name ?? "<no-name>"));
+            return System.Threading.Tasks.Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Console.WriteLine("[JWT] OnChallenge error: " + context.Error + " desc: " + context.ErrorDescription);
+            return System.Threading.Tasks.Task.CompletedTask;
+        }
     };
 });
 
@@ -65,7 +94,11 @@ var app = builder.Build();
 
 // ================== Middleware ==================
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -78,13 +111,14 @@ app.UseRouting();
 
 app.UseSession();
 
+// CORS debe aplicarse antes de la autenticación para que los headers estén presentes en todas las respuestas
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ================== Rutas ==================
-
+// Mapear controllers y rutas MVC
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"

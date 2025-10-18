@@ -8,7 +8,7 @@ using System;
 
 namespace APP.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/gpu")]
     [ApiController]
     [Authorize] // Requiere JWT para todos los endpoints
     public class GpuApiController : ControllerBase
@@ -88,26 +88,44 @@ namespace APP.Controllers
 
         // --- OBTENER GPU POR ID
         [HttpGet("{id}")]
-        public IActionResult GetGPU(int id)
+public IActionResult GetGPU(int id)
+{
+    try
+    {
+        var gpu = _db.ObtenerGPUs()?.FirstOrDefault(g => g.IdGPU == id);
+
+        if (gpu == null) return NotFound(new { error = "GPU no encontrada" });
+
+        var result = new
         {
-            var gpu = _db.ObtenerGPUs().FirstOrDefault(g => g.IdGPU == id);
-
-            if (gpu == null) return NotFound(new { error = "GPU no encontrada" });
-
-            var result = new
+            gpu.IdGPU,
+            gpu.Marca,
+            gpu.Modelo,
+            gpu.VRAM,
+            gpu.NucleosCuda,
+            gpu.Precio,
+            gpu.Imagen,
+            gpu.RayTracing,
+            Proveedor = gpu.Proveedor == null ? null : new
             {
-                gpu.IdGPU,
-                gpu.Marca,
-                gpu.Modelo,
-                gpu.VRAM,
-                gpu.NucleosCuda,
-                gpu.Precio,
-                gpu.Imagen,
-                gpu.RayTracing
-            };
+                IdProveedor = gpu.Proveedor.IdProveedor,
+                Nombre = gpu.Proveedor.Nombre,
+                Direccion = gpu.Proveedor.Direccion,
+                Telefono = gpu.Proveedor.Telefono,
+                Email = gpu.Proveedor.Email
+            }
+        };
 
-            return Ok(result);
-        }
+        return Ok(result);
+    }
+    catch (Exception ex)
+    {
+        // loguear el detalle del error en la consola/servidor
+        Console.WriteLine($"[GpuApiController] Error en GetGPU id={id}: {ex}");
+        // devolver JSON con mensaje (no poner stacktrace en producción)
+        return StatusCode(500, new { error = "Error interno al obtener GPU", detail = ex.Message });
+    }
+}
 
         // --- CREAR GPU (solo ADMIN y ENCARGADO)
         [HttpPost]

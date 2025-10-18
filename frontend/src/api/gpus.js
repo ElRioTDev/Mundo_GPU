@@ -1,16 +1,47 @@
-// frontend/src/api/gpu.js
 import { getToken } from "./auth";
 
-const API_URL = "http://localhost:5157/api/gpuapi";
+const API_URL = "http://localhost:5157/api/gpu";
+// raíz de la API (sin el segmento 'gpu')
+const API_ROOT = API_URL.replace(/\/gpu$/, "");
 
 // Devuelve headers con JWT si existe
 function getAuthHeaders() {
   const token = getToken();
-  console.log("[gpu.js] Token obtenido:", token);
+  // no loguear tokens en producción; útil en dev
+  console.log("[gpu.js] Token obtenido:", !!token);
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
+
+async function handleResponse(response) {
+  const status = response.status;
+  const text = await response.text().catch(() => "");
+  let data = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
+
+  console.log(`[gpu.js] Response status: ${status}`, data);
+
+  if (!response.ok) {
+    if (status === 401) {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      err.body = data;
+      throw err;
+    }
+    const message = (data && (data.error || data.message)) || text || `HTTP ${status}`;
+    const err = new Error(message);
+    err.status = status;
+    err.body = data;
+    throw err;
+  }
+
+  return data;
 }
 
 // --- OBTENER TODAS LAS GPUs ---
@@ -18,20 +49,59 @@ export async function getGPUs() {
   console.log("[gpu.js] Llamando a GET GPUs...");
   try {
     const response = await fetch(API_URL, { headers: getAuthHeaders() });
-    console.log("[gpu.js] Response status:", response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("[gpu.js] Error al obtener GPUs:", errorText);
-      throw new Error("Error al obtener las GPUs");
-    }
-
-    const data = await response.json();
-    console.log("[gpu.js] Datos recibidos de GPUs:", data);
-
+    const data = await handleResponse(response);
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.error("[gpu.js] Excepción en getGPUs:", err);
+    throw err;
+  }
+}
+
+// --- OBTENER PROVEEDORES ---
+// Si no existe endpoint /proveedores, extrae proveedores embebidos en las GPUs
+export async function getProveedores() {
+  console.log("[gpu.js] Extrayendo proveedores desde getGPUs...");
+  try {
+    const gpus = await getGPUs();
+    if (!Array.isArray(gpus) || gpus.length === 0) {
+      console.log("[gpu.js] No hay GPUs para extraer proveedores.");
+      return [];
+    }
+
+    const map = new Map();
+    gpus.forEach((gpu) => {
+      // posibles formas de venir el proveedor desde backend
+      const p = gpu?.proveedor || gpu?.Proveedor || gpu?.ProveedorDTO || gpu?.provider || null;
+      if (!p) return;
+
+      // normalizar keys mínimas (crear objeto con nombres amigables)
+      const proveedor = {
+        IdProveedor: p.IdProveedor ?? p.idProveedor ?? p.Id ?? p.id ?? null,
+        Nombre: p.Nombre ?? p.nombre ?? p.name ?? "",
+        Direccion: p.Direccion ?? p.direccion ?? p.address ?? "",
+        Telefono: p.Telefono ?? p.telefono ?? p.phone ?? "",
+        Email: p.Email ?? p.email ?? "",
+        raw: p,
+      };
+
+      // key única: preferir id, fallback email, fallback nombre
+      const key = proveedor.IdProveedor ?? proveedor.Email ?? proveedor.Nombre ?? JSON.stringify(proveedor.raw);
+      if (!map.has(key)) map.set(key, proveedor);
+    });
+
+    const proveedores = Array.from(map.values()).map(p => ({
+      id: p.IdProveedor,
+      nombre: p.Nombre,
+      direccion: p.Direccion,
+      telefono: p.Telefono,
+      email: p.Email,
+      _raw: p.raw,
+    }));
+
+    console.log("[gpu.js] Proveedores extraídos:", proveedores);
+    return proveedores;
+  } catch (err) {
+    console.error("[gpu.js] Excepción en getProveedores (extracción):", err);
     throw err;
   }
 }
@@ -44,16 +114,7 @@ export async function getGPU(id) {
 
   try {
     const response = await fetch(`${API_URL}/${idNum}`, { headers: getAuthHeaders() });
-    console.log("[gpu.js] Response status getGPU:", response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("[gpu.js] Error al obtener GPU por ID:", errorText);
-      throw new Error("GPU no encontrada");
-    }
-
-    const data = await response.json();
-    console.log("[gpu.js] Datos recibidos getGPU:", data);
+    const data = await handleResponse(response);
     return data;
   } catch (err) {
     console.error("[gpu.js] Excepción en getGPU:", err);
@@ -70,21 +131,7 @@ export async function searchGPU(searchTerm) {
     const response = await fetch(`${API_URL}/search?searchTerm=${encodeURIComponent(searchTerm)}`, {
       headers: getAuthHeaders(),
     });
-
-    console.log("[gpu.js] Response status search:", response.status);
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        console.warn("[gpu.js] No se encontraron GPUs con el término:", searchTerm);
-        return [];
-      }
-      const errorText = await response.text();
-      console.error("[gpu.js] Error en searchGPU:", errorText);
-      throw new Error("Error en la búsqueda de GPU");
-    }
-
-    const data = await response.json();
-    console.log("[gpu.js] Resultados searchGPU:", data);
+    const data = await handleResponse(response);
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.error("[gpu.js] Excepción en searchGPU:", err);
@@ -103,17 +150,7 @@ export async function createGPU(gpu = {}, proveedor = null) {
       headers: getAuthHeaders(),
       body,
     });
-
-    console.log("[gpu.js] Response status createGPU:", response.status);
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      console.error("[gpu.js] Error createGPU:", errData);
-      throw new Error(errData.error || "Error al crear GPU");
-    }
-
-    const data = await response.json();
-    console.log("[gpu.js] GPU creada:", data);
+    const data = await handleResponse(response);
     return data;
   } catch (err) {
     console.error("[gpu.js] Excepción en createGPU:", err);
@@ -134,17 +171,7 @@ export async function updateGPU(id, gpu = {}, proveedor = null) {
       headers: getAuthHeaders(),
       body,
     });
-
-    console.log("[gpu.js] Response status updateGPU:", response.status);
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      console.error("[gpu.js] Error updateGPU:", errData);
-      throw new Error(errData.error || "Error al actualizar GPU");
-    }
-
-    const data = await response.json();
-    console.log("[gpu.js] GPU actualizada:", data);
+    const data = await handleResponse(response);
     return data;
   } catch (err) {
     console.error("[gpu.js] Excepción en updateGPU:", err);
@@ -163,15 +190,7 @@ export async function deleteGPU(id) {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-
-    console.log("[gpu.js] Response status deleteGPU:", response.status);
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      console.error("[gpu.js] Error deleteGPU:", errData);
-      throw new Error(errData.error || "Error al eliminar GPU");
-    }
-
+    await handleResponse(response);
     console.log("[gpu.js] GPU eliminada exitosamente");
     return true;
   } catch (err) {
