@@ -9,7 +9,6 @@ const Header = () => {
         </Link>
         <nav>
           <Link to="/gpu" className="text-white mx-2 text-decoration-none">GPUs</Link>
-          <Link to="/usuarios" className="text-white mx-2 text-decoration-none">Usuarios</Link>
           <Link to="/login" className="text-white mx-2 text-decoration-none">Login</Link>
         </nav>
       </div>

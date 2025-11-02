@@ -1,7 +1,7 @@
+// ...existing code...
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getProveedores } from '../../api/gpus';
-import { createGPU } from '../../api/gpus';
+import { getProveedores, createGPU } from '../../api/gpus';
 import './Create.css';
 
 export default function CreateGPU() {
@@ -12,11 +12,11 @@ export default function CreateGPU() {
         Marca: '',
         Modelo: '',
         VRAM: '',
-        NucleosCuda: '',
+        NucleosCuda: '',           // mantener como string para el input number
         RayTracing: false,
         Imagen: '',
-        Precio: '',
-        ProveedoresIdProveedor: 0,
+        Precio: '',                // mantener como string para el input number
+        ProveedoresIdProveedor: 0, // select devuelve string, normalizar en submit
         nuevoProveedorNombre: '',
         nuevoProveedorDireccion: '',
         nuevoProveedorTelefono: '',
@@ -27,17 +27,31 @@ export default function CreateGPU() {
 
     useEffect(() => {
         async function fetchProveedores() {
-            const data = await getProveedores();
-            setProveedores(data || []);
+            try {
+                const data = await getProveedores();
+                setProveedores(Array.isArray(data) ? data : []);
+            } catch (err) {
+                console.error("Error al cargar proveedores:", err);
+                setProveedores([]);
+            }
         }
         fetchProveedores();
     }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setForm({
-            ...form,
-            [name]: type === 'checkbox' ? checked : value
+
+        setForm(prev => {
+            if (type === 'checkbox') {
+                return { ...prev, [name]: checked };
+            }
+
+            // mantener número como string en el estado para evitar uncontrolled -> controlled
+            if (name === 'NucleosCuda' || name === 'Precio' || name === 'ProveedoresIdProveedor') {
+                return { ...prev, [name]: value };
+            }
+
+            return { ...prev, [name]: value };
         });
     };
 
@@ -46,10 +60,40 @@ export default function CreateGPU() {
         setErrors([]);
 
         try {
-            await createGPU(form); // Llama a tu API de GPUs
-            navigate('/gpu'); // Redirige al listado
+            // validar campos mínimos
+            if (!form.Marca.trim() || !form.Modelo.trim() || !form.VRAM.trim()) {
+                setErrors(["Marca, Modelo y VRAM son obligatorios."]);
+                return;
+            }
+
+            const gpuPayload = {
+                Marca: form.Marca.trim(),
+                Modelo: form.Modelo.trim(),
+                VRAM: form.VRAM.trim(),
+                NucleosCuda: Number(form.NucleosCuda) || 0,
+                RayTracing: !!form.RayTracing,
+                Imagen: form.Imagen ? form.Imagen.trim() : "",
+                Precio: parseFloat(form.Precio) || 0,
+                ProveedoresIdProveedor: Number(form.ProveedoresIdProveedor) || 0
+            };
+
+            const proveedorPayload =
+                form.nuevoProveedorNombre && form.nuevoProveedorNombre.trim() !== ""
+                    ? {
+                        Nombre: form.nuevoProveedorNombre.trim(),
+                        Direccion: form.nuevoProveedorDireccion?.trim() || "",
+                        Telefono: form.nuevoProveedorTelefono?.trim() || "",
+                        Email: form.nuevoProveedorEmail?.trim() || ""
+                    }
+                    : null;
+
+            await createGPU(gpuPayload, proveedorPayload);
+            navigate('/gpu');
         } catch (err) {
-            setErrors(err.errors || [err.message || 'Error desconocido']);
+            console.error("Error createGPU:", err);
+            // intentar obtener mensaje del formato de error que usamos en gpus.js
+            const msg = (err.body && (err.body.error || err.body.message)) || err.message || "Error desconocido";
+            setErrors(Array.isArray(msg) ? msg : [msg]);
         }
     };
 
@@ -88,7 +132,7 @@ export default function CreateGPU() {
 
                     <div className="col-md-4 d-flex align-items-center">
                         <div className="form-check mt-4">
-                            <input type="checkbox" name="RayTracing" className="form-check-input" checked={form.RayTracing} onChange={handleChange} />
+                            <input type="checkbox" name="RayTracing" className="form-check-input" checked={!!form.RayTracing} onChange={handleChange} />
                             <label className="form-check-label">Ray Tracing</label>
                         </div>
                     </div>
@@ -108,7 +152,7 @@ export default function CreateGPU() {
                         <select name="ProveedoresIdProveedor" className="form-select" value={form.ProveedoresIdProveedor} onChange={handleChange}>
                             <option value={0}>-- Seleccionar proveedor existente --</option>
                             {proveedores.map(p => (
-                                <option key={p.IdProveedor} value={p.IdProveedor}>{p.Nombre}</option>
+                                <option key={p.IdProveedor ?? p.id} value={p.IdProveedor ?? p.id}>{p.Nombre ?? p.nombre}</option>
                             ))}
                         </select>
                         <small className="text-muted">Opcional: selecciona un proveedor existente O crea uno nuevo abajo</small>

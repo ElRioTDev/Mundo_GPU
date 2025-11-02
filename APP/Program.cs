@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
+using System.Security.Cryptography; // <-- añadido
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +36,11 @@ builder.Services.AddSession(options =>
 
 // ================== JWT Authentication ==================
 // Lee la clave desde configuración si existe, si no usa el valor por defecto
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1s1";
-var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jxy1";
+
+// Derivar bytes de 32 bytes (SHA256) a partir de la cadena configurada para garantizar tamaño válido para HS256
+var signingKeyBytes = SHA256.HashData(Encoding.UTF8.GetBytes(jwtKey));
+var signingKey = new SymmetricSecurityKey(signingKeyBytes) { KeyId = "app-key" };
 
 builder.Services.AddAuthentication(options =>
 {
@@ -79,12 +83,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// ================== Authorization ==================
+builder.Services.AddAuthorization();
+
 // ================== CORS ==================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://localhost:5173",
+                "http://127.0.0.1:5173",
+                "https://127.0.0.1:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials());

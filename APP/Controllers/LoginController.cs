@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration; // <-- añadido
 
 namespace APP.Controllers
 {
@@ -14,10 +15,12 @@ namespace APP.Controllers
     public class LoginApiController : ControllerBase
     {
         private readonly ConexionMySql _db;
+        private readonly IConfiguration _config; // <-- añadido
 
-        public LoginApiController(ConexionMySql db)
+        public LoginApiController(ConexionMySql db, IConfiguration config) // <-- constructor actualizado
         {
             _db = db;
+            _config = config;
         }
 
         // --- LOGIN ---
@@ -35,18 +38,24 @@ namespace APP.Controllers
             // --- Generar JWT ---
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, usuario.Username),
-                new Claim("rol", usuario.Rol)
+                new Claim(JwtRegisteredClaimNames.Sub, usuario.Username ?? string.Empty),
+                new Claim(ClaimTypes.Name, usuario.Username ?? string.Empty),
+                new Claim("rol", usuario.Rol ?? string.Empty)
             };
-         
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jW1s1"
-)); // Usa la misma clave que en Program.cs
+            // Obtener la clave desde configuración (coincide con el valor por defecto en Program.cs)
+            var jwtKey = _config["Jwt:Key"] ?? "r8P2y!dK9xQf#v7Lz3Tn&u6BmH5jxy1";
+
+            // Derivar bytes de 32 bytes (SHA256) para que la firma con HS256 reciba la longitud mínima requerida
+            var keyBytes = SHA256.HashData(Encoding.UTF8.GetBytes(jwtKey));
+            var key = new SymmetricSecurityKey(keyBytes);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var now = DateTime.UtcNow;
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                notBefore: now,
+                expires: now.AddHours(2),
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
