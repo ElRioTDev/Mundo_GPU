@@ -14,7 +14,7 @@ const Header = () => {
         <nav>
           <Link to="/gpu" className="text-white mx-2 text-decoration-none">GPUs</Link>
 
-          {/* Botón visible solo para administradores */}
+         {/*{/* Botón visible solo para administradores 
           {isAuthenticated && String(userRole || "").toUpperCase() === "ADMIN" && (
             <button
               className="btn btn-outline-light btn-sm ms-2"
@@ -23,6 +23,8 @@ const Header = () => {
               Usuarios
             </button>
           )}
+          */ }
+         
 
           {isAuthenticated ? (
             <button
