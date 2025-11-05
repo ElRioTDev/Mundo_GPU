@@ -1,6 +1,8 @@
+import axios from "axios";
 import { getToken } from "./auth";
 
-const API_URL = "http://localhost:5157/api/user"; // Ajusta al endpoint real de tu backend .NET
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5157";
+const API_URL = `${API_BASE}/api/usuarios`; // ajustable según backend
 
 function getAuthHeaders() {
   const token = getToken();
@@ -10,61 +12,64 @@ function getAuthHeaders() {
   };
 }
 
-// Obtener todos los usuarios
 export async function getAllUsers() {
-  const response = await fetch(API_URL, {
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Error al obtener usuarios");
-  return await response.json();
+  try {
+    const res = await axios.get(API_URL, { headers: getAuthHeaders() });
+    return res.data;
+  } catch (err) {
+    console.error("getAllUsers:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Error al obtener usuarios");
+  }
 }
 
-// Obtener un usuario por ID
 export async function getUserById(id) {
-  const response = await fetch(`${API_URL}/${id}`, {
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Usuario no encontrado");
-  return await response.json();
+  try {
+    const res = await axios.get(`${API_URL}/${encodeURIComponent(id)}`, { headers: getAuthHeaders() });
+    return res.data;
+  } catch (err) {
+    console.error("getUserById:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Usuario no encontrado");
+  }
 }
 
-// Crear un nuevo usuario
 export async function createUser(userData) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(userData),
-  });
-  if (!response.ok) throw new Error("Error al crear usuario");
-  return await response.json();
+  try {
+    const res = await axios.post(API_URL, userData, { headers: getAuthHeaders() });
+    return res.data;
+  } catch (err) {
+    console.error("createUser:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Error al crear usuario");
+  }
 }
 
-// Editar usuario existente
 export async function updateUser(id, userData) {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(userData),
-  });
-  if (!response.ok) throw new Error("Error al actualizar usuario");
-  return await response.json();
+  try {
+    const res = await axios.put(`${API_URL}/${encodeURIComponent(id)}`, userData, { headers: getAuthHeaders() });
+    return res.data;
+  } catch (err) {
+    console.error("updateUser:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Error al actualizar usuario");
+  }
 }
 
-// Eliminar usuario
 export async function deleteUser(id) {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Error al eliminar usuario");
-  return true;
+  try {
+    const res = await axios.delete(`${API_URL}/${encodeURIComponent(id)}`, { headers: getAuthHeaders() });
+    return res.status === 200 ? res.data ?? true : true;
+  } catch (err) {
+    console.error("deleteUser:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Error al eliminar usuario");
+  }
 }
 
-// Buscar usuario por término (nombre, apellido, username o id)
-export async function searchUser(term) {
-  const response = await fetch(`${API_URL}/search?searchTerm=${encodeURIComponent(term)}`, {
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Error al buscar usuario");
-  return await response.json();
+// Buscar usuarios; backend debe exponer /api/usuarios/search?searchTerm=...
+export async function searchUsers(term) {
+  try {
+    const url = `${API_URL}/search`;
+    const res = await axios.get(url, { params: { searchTerm: term }, headers: getAuthHeaders() });
+    return res.data;
+  } catch (err) {
+    console.error("searchUsers:", err.response?.data || err.message);
+    throw err.response?.data || new Error("Error al buscar usuario");
+  }
 }

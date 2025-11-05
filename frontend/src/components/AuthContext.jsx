@@ -7,12 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState("EMPLEADO"); // Rol por defecto
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // nuevo: indica que estamos verificando el token
 
   useEffect(() => {
     const checkAuth = async () => {
       const token = getToken();
       const currentUser = getCurrentUser();
 
+      setLoading(true);
       if (token && currentUser) {
         const valid = await validateSession();
         setIsAuthenticated(valid);
@@ -31,6 +33,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setUserRole("EMPLEADO");
       }
+      setLoading(false);
     };
 
     checkAuth();
@@ -43,8 +46,20 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  // Metodo para establecer el usuario tras un login exitoso (actualiza estado y localStorage)
+  const handleLogin = (userObj) => {
+    if (!userObj) return;
+    setUser(userObj);
+    setUserRole(userObj.rol || userObj.role || "EMPLEADO");
+    setIsAuthenticated(true);
+    setLoading(false); // asegurar que loading se desactive tras login manual
+    try {
+      localStorage.setItem("user", JSON.stringify(userObj));
+    } catch { /* ignore */ }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, userRole, isAuthenticated, setUser, handleLogout }}>
+    <AuthContext.Provider value={{ user, userRole, isAuthenticated, loading, setUser, handleLogin, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

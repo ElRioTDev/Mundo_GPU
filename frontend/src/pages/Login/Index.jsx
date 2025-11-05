@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../api/auth';
+import { useAuth } from '../../components/AuthContext';
 import './Index.css';
 
 export default function LoginIndex() {
     const navigate = useNavigate();
+    const { handleLogin } = useAuth();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -18,9 +20,9 @@ export default function LoginIndex() {
             // Llamada a tu API de login
             const data = await login(username, password);
 
-            // Guardar info de sesión localmente (puedes usar context o localStorage)
-            localStorage.setItem('rol', data.rol);
-            localStorage.setItem('username', data.username);
+            // Actualizar contexto de autenticación con el usuario recibido
+            // data expected: { token, user }
+            handleLogin(data.user ?? data);
 
             // Redirigir a página de GPUs
             navigate('/gpu');

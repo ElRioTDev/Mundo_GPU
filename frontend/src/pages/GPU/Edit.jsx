@@ -6,7 +6,20 @@ import './Edit.css';
 export default function EditGPU() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [gpu, setGpu] = useState(null);
+
+    // 1) Estado inicial con todos los campos para inputs controlados
+    const [gpu, setGpu] = useState({
+        IdGPU: id ? Number(id) : 0,
+        Marca: '',
+        Modelo: '',
+        VRAM: '',
+        NucleosCuda: '', // string para el input number controlado
+        RayTracing: false,
+        Imagen: '',
+        Precio: '', // string para control
+        ProveedoresIdProveedor: '' // '' = sin selección
+    });
+
     const [proveedores, setProveedores] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
@@ -14,27 +27,43 @@ export default function EditGPU() {
     useEffect(() => {
         async function fetchData() {
             try {
+                setLoading(true);
                 const [gpuData, proveedoresData] = await Promise.all([
                     getGPU(id),
                     getProveedores()
                 ]);
 
-                // Normalizar/llenar valores para inputs controlados
-                const mapped = {
-                    IdGPU: gpuData.IdGPU ?? Number(id),
-                    Marca: gpuData.Marca ?? '',
-                    Modelo: gpuData.Modelo ?? '',
-                    VRAM: gpuData.VRAM ?? '',
-                    // Mantener como string para inputs; convertir a número en submit
-                    NucleosCuda: gpuData.NucleosCuda !== undefined && gpuData.NucleosCuda !== null ? String(gpuData.NucleosCuda) : '',
-                    RayTracing: !!gpuData.RayTracing,
-                    Imagen: gpuData.Imagen ?? '',
-                    Precio: gpuData.Precio !== undefined && gpuData.Precio !== null ? String(gpuData.Precio) : '',
-                    // Select usa string; dejar '' si no existe
-                    ProveedoresIdProveedor: gpuData.Proveedor?.IdProveedor ?? gpuData.ProveedoresIdProveedor ?? ''
+                // 2) Mapeo tolerante: aceptar camelCase o PascalCase desde la API
+                const get = (obj, ...keys) => {
+                    for (const k of keys) {
+                        if (!obj) continue;
+                        if (Object.prototype.hasOwnProperty.call(obj, k)) return obj[k];
+                    }
+                    return undefined;
                 };
 
-                setGpu(mapped);
+                const mapped = {
+                    IdGPU: get(gpuData, 'IdGPU', 'idGPU', 'id') ?? Number(id),
+                    Marca: get(gpuData, 'Marca', 'marca') ?? '',
+                    Modelo: get(gpuData, 'Modelo', 'modelo') ?? '',
+                    VRAM: get(gpuData, 'VRAM', 'vram') ?? '',
+                    NucleosCuda:
+                        get(gpuData, 'NucleosCuda', 'nucleosCuda', 'nucleos_cuda') != null
+                            ? String(get(gpuData, 'NucleosCuda', 'nucleosCuda', 'nucleos_cuda'))
+                            : '',
+                    RayTracing: Boolean(get(gpuData, 'RayTracing', 'rayTracing', 'ray_tracing')),
+                    Imagen: get(gpuData, 'Imagen', 'imagen') ?? '',
+                    Precio:
+                        get(gpuData, 'Precio', 'precio') != null
+                            ? String(get(gpuData, 'Precio', 'precio'))
+                            : '',
+                    ProveedoresIdProveedor:
+                        get(gpuData?.Proveedor, 'IdProveedor', 'id') ??
+                        get(gpuData, 'ProveedoresIdProveedor', 'proveedoresIdProveedor', 'ProveedoresIdProveedor') ??
+                        ''
+                };
+
+                setGpu(prev => ({ ...prev, ...mapped }));
                 setProveedores(Array.isArray(proveedoresData) ? proveedoresData : []);
             } catch (err) {
                 console.error(err);
@@ -110,7 +139,7 @@ export default function EditGPU() {
                     <input
                         type="text"
                         name="Marca"
-                        value={gpu.Marca}
+                        value={gpu.Marca ?? ''}
                         onChange={handleChange}
                         className="form-control"
                         required
@@ -122,7 +151,7 @@ export default function EditGPU() {
                     <input
                         type="text"
                         name="Modelo"
-                        value={gpu.Modelo}
+                        value={gpu.Modelo ?? ''}
                         onChange={handleChange}
                         className="form-control"
                         required
@@ -134,7 +163,7 @@ export default function EditGPU() {
                     <input
                         type="text"
                         name="VRAM"
-                        value={gpu.VRAM}
+                        value={gpu.VRAM ?? ''}
                         onChange={handleChange}
                         className="form-control"
                         required
@@ -146,7 +175,7 @@ export default function EditGPU() {
                     <input
                         type="number"
                         name="NucleosCuda"
-                        value={gpu.NucleosCuda}
+                        value={gpu.NucleosCuda ?? ''}
                         onChange={handleChange}
                         className="form-control"
                         required
@@ -169,7 +198,7 @@ export default function EditGPU() {
                     <input
                         type="number"
                         name="Precio"
-                        value={gpu.Precio}
+                        value={gpu.Precio ?? ''}
                         step="0.01"
                         onChange={handleChange}
                         className="form-control"
@@ -197,7 +226,7 @@ export default function EditGPU() {
                     <input
                         type="text"
                         name="Imagen"
-                        value={gpu.Imagen}
+                        value={gpu.Imagen ?? ''}
                         onChange={handleChange}
                         className="form-control"
                     />

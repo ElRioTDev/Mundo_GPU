@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Index.css";
 
 const Index = ({ usuarios = [], onSearch, onDelete, onEdit, onDetails, successMsg, errorMsg, onCreate }) => {
   const [searchTerm, setSearchTerm] = useState("");
+
+  // DEBUG: loguear los datos que llegan a la vista para inspección
+  useEffect(() => {
+    console.log("[User/Index] usuarios prop:", usuarios);
+    try {
+      console.log("[User/Index] usuarios JSON:", JSON.stringify(usuarios, null, 2));
+    } catch {
+      // en caso de circular refs u otros problemas, evitar crash
+      console.log("[User/Index] usuarios (no convertible a JSON)");
+    }
+  }, [usuarios]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -19,21 +30,6 @@ const Index = ({ usuarios = [], onSearch, onDelete, onEdit, onDetails, successMs
       <p>
         <button className="btn btn-primary" onClick={onCreate}>Crear Nuevo Usuario</button>
       </p>
-
-      <form className="row g-3 mb-3" onSubmit={handleSearch}>
-        <div className="col-auto">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por ID o Nombre..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="col-auto">
-          <button type="submit" className="btn btn-secondary">Buscar</button>
-        </div>
-      </form>
 
       <table className="table table-striped table-bordered">
         <thead className="table-dark">
